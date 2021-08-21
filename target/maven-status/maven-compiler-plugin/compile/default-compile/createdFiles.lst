@@ -1,0 +1,8 @@
+com/example/dictionary/DictionaryApplication.class
+com/example/dictionary/orm/WordRepo.class
+com/example/dictionary/control/WordControl.class
+com/example/dictionary/model/Word.class
+com/example/dictionary/orm/WordServ.class
+com/example/dictionary/orm/SynonymServ.class
+com/example/dictionary/model/Synonym.class
+com/example/dictionary/orm/SynonymRepo.class
