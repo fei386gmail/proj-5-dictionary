@@ -4,6 +4,8 @@ import com.example.dictionary.model.Word;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,6 +18,9 @@ public class WordServ {
     @Autowired
     private WordRepo wordRepo;
 
+    public Page<Word> findAll(Pageable pageable){
+        return wordRepo.findAll(pageable);
+    }
 
     public Word findOneById(String id) {
         Optional<Word> o= wordRepo.findById(id);
@@ -112,5 +117,6 @@ public class WordServ {
         List<Word> words=wordRepo.findAll(example);
         return  words;
     }
+
 
 }

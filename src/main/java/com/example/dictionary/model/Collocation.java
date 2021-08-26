@@ -11,25 +11,25 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @Entity
-@Table(name = "Synonyms")
-public class Synonym {
+@Table(name = "Collocations")
+public class Collocation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
     @Column(length=32,unique = false)
     private String word;
     @Column(length=512)
-    private String synonym;
+    private String Collocation;
     @Column(length = 32)
     private String property;
 
-    public Synonym() {
+    public Collocation() {
 
     }
 
-    public Synonym(String word, String synonym, String property) {
+    public Collocation(String word, String collocation, String property) {
         this.word = word;
-        this.synonym = synonym;
+        Collocation = collocation;
         this.property = property;
     }
 }

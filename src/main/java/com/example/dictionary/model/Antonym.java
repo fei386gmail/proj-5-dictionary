@@ -1,6 +1,5 @@
 package com.example.dictionary.model;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -11,25 +10,25 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @Entity
-@Table(name = "Synonyms")
-public class Synonym {
+@Table(name = "Antonyms")
+public class Antonym {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
     @Column(length=32,unique = false)
     private String word;
     @Column(length=512)
-    private String synonym;
+    private String antonym;
     @Column(length = 32)
     private String property;
 
-    public Synonym() {
+    public Antonym() {
 
     }
 
-    public Synonym(String word, String synonym, String property) {
+    public Antonym(String word, String antonym, String property) {
         this.word = word;
-        this.synonym = synonym;
+        this.antonym = antonym;
         this.property = property;
     }
 }

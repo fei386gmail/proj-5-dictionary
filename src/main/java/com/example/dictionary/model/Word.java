@@ -12,10 +12,9 @@ import javax.persistence.*;
 @Table(name = "Enwords")
 public class Word {
     @Id
-    @GenericGenerator(name = "idGenerator", strategy = "uuid")
-    @GeneratedValue(generator = "idGenerator")
+    @Column(length=32,unique = true)
     private String word;
-    @Column
+    @Column(length=512)
     private String translation;
 }
 
