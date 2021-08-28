@@ -17,6 +17,9 @@ import java.util.regex.Pattern;
 public class WordControl {
     @Autowired
     private WordServ wordServ;
+    @Autowired
+    private ResultServ resultServ;
+
 
     @RequestMapping("/dic")
     public String index()
@@ -24,11 +27,19 @@ public class WordControl {
         return "index.html";
     }
 
+    @RequestMapping("/api/getDetail")
+    @ResponseBody
+    public Result getResult(@RequestParam("ID") String id)
+    {
+        return resultServ.getResult(id) ;
+    }
+
 
     @RequestMapping("/api/getData")
     @ResponseBody
     public List<Word> getData(@RequestParam("ID") String id) throws InterruptedException {
         List<Word> words=new ArrayList<>();
+
         //如果有中文字符，则模糊查找解释
         if(isContainChinese(id))
         {

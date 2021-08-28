@@ -1,8 +1,17 @@
-/Users/chenfei/OneDrive/IDEAProject/proj 5 dictionary/src/main/java/com/example/dictionary/control/WordControl.java
-/Users/chenfei/OneDrive/IDEAProject/proj 5 dictionary/src/main/java/com/example/dictionary/orm/WordRepo.java
-/Users/chenfei/OneDrive/IDEAProject/proj 5 dictionary/src/main/java/com/example/dictionary/orm/SynonymServ.java
-/Users/chenfei/OneDrive/IDEAProject/proj 5 dictionary/src/main/java/com/example/dictionary/model/Synonym.java
-/Users/chenfei/OneDrive/IDEAProject/proj 5 dictionary/src/main/java/com/example/dictionary/orm/WordServ.java
-/Users/chenfei/OneDrive/IDEAProject/proj 5 dictionary/src/main/java/com/example/dictionary/orm/SynonymRepo.java
-/Users/chenfei/OneDrive/IDEAProject/proj 5 dictionary/src/main/java/com/example/dictionary/DictionaryApplication.java
-/Users/chenfei/OneDrive/IDEAProject/proj 5 dictionary/src/main/java/com/example/dictionary/model/Word.java
+/Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/orm/WordRepo.java
+/Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/orm/SynonymServ.java
+/Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/model/Collocation.java
+/Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/orm/AntonymServ.java
+/Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/orm/CollocationServ.java
+/Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/common/TablePageable.java
+/Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/model/Word.java
+/Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/model/Synonym.java
+/Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/orm/SynonymRepo.java
+/Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/orm/WordServ.java
+/Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/model/Antonym.java
+/Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/control/ResultServ.java
+/Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/control/Result.java
+/Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/orm/CollocationRepo.java
+/Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/control/WordControl.java
+/Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/DictionaryApplication.java
+/Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/orm/AntonymRepo.java
