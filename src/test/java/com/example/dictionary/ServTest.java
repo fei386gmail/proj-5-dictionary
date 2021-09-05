@@ -1,6 +1,6 @@
 package com.example.dictionary;
 
-import com.example.dictionary.control.ResultServ;
+import com.example.dictionary.common.ResultServ;
 import com.example.dictionary.orm.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

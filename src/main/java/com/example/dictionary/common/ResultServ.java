@@ -1,8 +1,6 @@
-package com.example.dictionary.control;
+package com.example.dictionary.common;
 
 
-import com.example.dictionary.model.Antonym;
-import com.example.dictionary.model.Synonym;
 import com.example.dictionary.model.Word;
 import com.example.dictionary.orm.AntonymServ;
 import com.example.dictionary.orm.CollocationServ;
@@ -10,7 +8,6 @@ import com.example.dictionary.orm.SynonymServ;
 import com.example.dictionary.orm.WordServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 public class ResultServ {

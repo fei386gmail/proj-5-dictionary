@@ -1,5 +1,7 @@
 package com.example.dictionary.control;
 
+import com.example.dictionary.common.Result;
+import com.example.dictionary.common.ResultServ;
 import com.example.dictionary.model.Word;
 import com.example.dictionary.orm.WordServ;
 import org.springframework.beans.factory.annotation.Autowired;

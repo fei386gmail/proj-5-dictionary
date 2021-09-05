@@ -1,4 +1,4 @@
-package com.example.dictionary.control;
+package com.example.dictionary.common;
 
 
 import lombok.AllArgsConstructor;

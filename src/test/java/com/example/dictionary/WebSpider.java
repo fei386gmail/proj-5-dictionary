@@ -36,7 +36,8 @@ public class WebSpider {
     private WebDriver webDriver;
 
     @Test
-    public void searchWord()
+    // search the page number if the chrome fails
+    public void searchWordPosition()
     {
         //参数
         String targetWord="amish";
@@ -68,10 +69,11 @@ public class WebSpider {
             }
         }
 
-        System.out.println("targetPage:"+countPage);
+        System.out.println("Page Number:"+countPage);
     }
 
     @Test
+    // main program to get all the content
     public void searchAndSave()
     {
         //参数
@@ -141,7 +143,6 @@ public class WebSpider {
         ) {
             WebElement property=propertyWebElement.findElement(new By.ByClassName("b_dictHighlight"));
             saveSynonym(word,propertyWebElement,property.getText());
-
         }
 
     }
