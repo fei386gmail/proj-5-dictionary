@@ -34,7 +34,7 @@ public class WebSpider_pronunciation {
     @Test
     public void test() throws IOException {
         //参数
-        int startPage=0;
+        int startPage=1039;
         int wordsPerPage=100;
 
         //开始
@@ -54,47 +54,31 @@ public class WebSpider_pronunciation {
                 Word w=words.get(i);
                 webDriver.get("https://cn.bing.com/dict/search?q="+w.getWord()+"&FORM=HDRSC6");
 
-                List<WebElement> divs= webDriver.findElements(new By.ByXPath("//div[@class='b_primtxt']"));
-                for (WebElement t: divs
+                List<WebElement> divs= webDriver.findElements(new By.ByXPath("//div[@class='hd_prUS b_primtxt']"));
+                for (WebElement div: divs
                 ) {
-                    if(t.getText().contains("美"))
+                    String content=div.getText();
+                    if(div.getText().contains("美"))
                     {
-                        t.click();
+                        div.click();
                         savePronunciation_US(w.getWord());
-
                     }
                 }
-
             }
         }
-
-
     }
 
     public void savePronunciation_US(String word) throws IOException {
-        webDriver.get("https://cn.bing.com/dict/search?q="+word+"&FORM=HDRSC6");
-        List<WebElement> divs= webDriver.findElements(new By.ByXPath("//div[@class='hd_prUS b_primtxt']"));
-        for (WebElement t: divs
-        ) {
-            if(t.getText().contains("美"))
-            {
-                List<WebElement> as=webDriver.findElements(new By.ByXPath("//a[@title='点击朗读']"));
-
-                String att= as.get(0).getAttribute("onclick");
-                System.out.println(att);
-                String urlString=getLinksFromString(att).get(0);
-                URL url=new URL(urlString);
-                URLConnection conn = url.openConnection();
-                InputStream inputStream = conn.getInputStream();
-                byte[] pronun=IOUtils.toByteArray(inputStream);
-                Pronunciation_US pronunciation_us=new Pronunciation_US(word,pronun);
-                pronunciation_usServ.save(pronunciation_us);
-
-            }
-        }
-
-
-
+        List<WebElement> as=webDriver.findElements(new By.ByXPath("//a[@title='点击朗读']"));
+        String att= as.get(0).getAttribute("onclick");
+        System.out.println(att);
+        String urlString=getLinksFromString(att).get(0);
+        URL url=new URL(urlString);
+        URLConnection conn = url.openConnection();
+        InputStream inputStream = conn.getInputStream();
+        byte[] pronun=IOUtils.toByteArray(inputStream);
+        Pronunciation_US pronunciation_us=new Pronunciation_US(word,pronun);
+        pronunciation_usServ.save(pronunciation_us);
     }
     //Pull all links from the body for easy retrieval
     private ArrayList<String> getLinksFromString(String text) {
@@ -113,4 +97,6 @@ public class WebSpider_pronunciation {
         }
         return links;
     }
+
+
 }
