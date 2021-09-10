@@ -2,15 +2,12 @@ package com.example.dictionary.common;
 
 
 import com.example.dictionary.model.Word;
-import com.example.dictionary.orm.AntonymServ;
-import com.example.dictionary.orm.CollocationServ;
-import com.example.dictionary.orm.SynonymServ;
-import com.example.dictionary.orm.WordServ;
+import com.example.dictionary.orm.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ResultServ {
+public class DetailResultServ {
 
     @Autowired
     private WordServ wordServ;
@@ -20,14 +17,16 @@ public class ResultServ {
     private AntonymServ antonymServ;
     @Autowired
     private CollocationServ collocationServ;
+    @Autowired
+    private Pronunciation_USServ pronunciation_usServ;
 
-    public Result getResult(String id)
+    public DetailResult getResult(String id)
     {
         Word word=wordServ.findOneById(id);
         String synonym=synonymServ.findSynonym(id);
         String antonym=antonymServ.findAntonym(id);
         String collocation=collocationServ.findCollations(id);
-
-        return new Result(word.getWord(),word.getTranslation(),synonym,antonym,collocation);
+        boolean pronunciation=pronunciation_usServ.havePronunciation(id);
+        return new DetailResult(word.getWord(),word.getTranslation(),synonym,antonym,collocation);
     }
 }

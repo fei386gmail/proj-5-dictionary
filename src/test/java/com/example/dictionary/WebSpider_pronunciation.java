@@ -1,15 +1,12 @@
 package com.example.dictionary;
 
-import com.example.dictionary.model.Pronunciation_US;
+import com.example.dictionary.model.Pronunciation_US_Bing;
 import com.example.dictionary.model.Word;
 import com.example.dictionary.orm.Pronunciation_USServ;
 import com.example.dictionary.orm.WordServ;
 import org.apache.commons.compress.utils.IOUtils;
 import org.junit.jupiter.api.Test;
-import org.mockito.internal.util.io.IOUtil;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,7 +29,7 @@ public class WebSpider_pronunciation {
 
     private WebDriver webDriver;
     @Test
-    public void test() throws IOException {
+    public void test() throws IOException, InterruptedException {
         //参数
         int startPage=1039;
         int wordsPerPage=100;
@@ -40,6 +37,10 @@ public class WebSpider_pronunciation {
         //开始
         System.setProperty("webdriver.chrome.driver","/Users/chenfei/OneDrive/IDEAProject/proj 5 dictionary/lib/chromedriver");
         webDriver=new ChromeDriver();
+
+//        WebDriverWait wait = new WebDriverWait(webDriver, 30);
+//        wait.until(webDriver -> ((JavascriptExecutor)webDriver).executeScript("return document.readyState").equals("complete"));
+
         PageRequest pageRequest=PageRequest.of(0,wordsPerPage);
         Page<Word> page=wordServ.findAll(pageRequest);
         long totalPages= page.getTotalPages();
@@ -52,7 +53,22 @@ public class WebSpider_pronunciation {
             for(int i=0;i<words.size();i++)
             {
                 Word w=words.get(i);
-                webDriver.get("https://cn.bing.com/dict/search?q="+w.getWord()+"&FORM=HDRSC6");
+                while (true){
+                    try {
+                        webDriver.get("https://cn.bing.com/dict/search?q="+w.getWord()+"&FORM=HDRSC6");
+                        break;
+                    }
+                    catch (TimeoutException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    catch (WebDriverException e)
+                    {
+                        System.out.println("网络断线。");
+                    }
+                }
+
+
 
                 List<WebElement> divs= webDriver.findElements(new By.ByXPath("//div[@class='hd_prUS b_primtxt']"));
                 for (WebElement div: divs
@@ -68,21 +84,49 @@ public class WebSpider_pronunciation {
         }
     }
 
-    public void savePronunciation_US(String word) throws IOException {
+    public void savePronunciation_US(String word) throws IOException, InterruptedException {
         List<WebElement> as=webDriver.findElements(new By.ByXPath("//a[@title='点击朗读']"));
+        if(as.size()==0) return;
         String att= as.get(0).getAttribute("onclick");
+
         System.out.println(att);
-        String urlString=getLinksFromString(att).get(0);
+        ArrayList<String> urlStrings=getLinksFromString(att);
+        if(urlStrings.size()==0) return;
+        String urlString=urlStrings.get(0);
         URL url=new URL(urlString);
         URLConnection conn = url.openConnection();
-        InputStream inputStream = conn.getInputStream();
+        InputStream inputStream;
+
+        while (true)
+        {
+            try {
+                inputStream = conn.getInputStream();
+                break;
+            }
+            catch (SocketException e)
+            { e.printStackTrace(); }
+            catch (TimeoutException e)
+            { e.printStackTrace(); }
+            catch (FileNotFoundException e )
+            {e.printStackTrace();
+                return;
+            }
+        }
+
         byte[] pronun=IOUtils.toByteArray(inputStream);
-        Pronunciation_US pronunciation_us=new Pronunciation_US(word,pronun);
-        pronunciation_usServ.save(pronunciation_us);
+        inputStream.close();
+        Pronunciation_US_Bing pronunciation_usBing =new Pronunciation_US_Bing(word,pronun);
+        try{
+            pronunciation_usServ.save(pronunciation_usBing);
+        }
+        catch (Exception e){
+        }
+
     }
     //Pull all links from the body for easy retrieval
     private ArrayList<String> getLinksFromString(String text) {
         ArrayList<String> links = new ArrayList();
+        if(text==null) return links;
 
         String regex ="\\(?\\b(https://|www[.])[-A-Za-z0-9+&@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#/%=~_()|]";
         Pattern p = Pattern.compile(regex);

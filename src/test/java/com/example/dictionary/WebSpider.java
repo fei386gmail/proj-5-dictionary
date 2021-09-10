@@ -40,7 +40,7 @@ public class WebSpider {
     public void searchWordPosition()
     {
         //参数
-        String targetWord="amish";
+        String targetWord="zygophyllaceae";
 
         //开始
         int countPage=0;
@@ -52,7 +52,7 @@ public class WebSpider {
         System.out.println("totalPages"+totalPages);
         for (int j=0;j<totalPages;j++)
         {
-            System.out.println("Page Number:"+j);
+//            System.out.println("Page Number:"+j);
             PageRequest pageRequest1=PageRequest.of(j,100);
             Page<Word> page1=wordServ.findAll(pageRequest1);
             List<Word> words=page1.getContent();

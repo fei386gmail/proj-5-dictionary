@@ -27,16 +27,17 @@ public class SynonymServ {
         String resultSynonym="";
         for (String s : properties
              ) {
-            resultSynonym=resultSynonym.concat(s);
+            resultSynonym=resultSynonym.concat(s).concat(" ");
             for (Synonym syn: synonyms
                  ) {
                 if(syn.getProperty().equals(s))
                 {
-                    resultSynonym=resultSynonym.concat(syn.getSynonym()).concat(" ");
+                    resultSynonym=resultSynonym.concat(syn.getSynonym()).concat(". ");
                 }
             }
             resultSynonym=resultSynonym.concat(" ");
         }
+
         return resultSynonym;
     }
 }

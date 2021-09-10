@@ -1,6 +1,6 @@
 package com.example.dictionary;
 
-import com.example.dictionary.common.ResultServ;
+import com.example.dictionary.common.DetailResultServ;
 import com.example.dictionary.model.Word;
 import com.example.dictionary.orm.*;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ public class ServTest {
     @Autowired
     private CollocationServ  collocationServ;
     @Autowired
-    private ResultServ resultServ;
+    private DetailResultServ resultServ;
 
     @Test
     public void ss()

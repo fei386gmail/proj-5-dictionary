@@ -1,12 +1,11 @@
 package com.example.dictionary.control;
 
-import com.example.dictionary.model.Pronunciation_US;
+import com.example.dictionary.model.Pronunciation_US_Bing;
 import com.example.dictionary.orm.Pronunciation_USServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -20,7 +19,7 @@ public class PronunciationControl {
 
     @RequestMapping("/audio/{word}.mp3")
     public void getPronunciation(@PathVariable("word")String word, HttpServletResponse response) throws IOException {
-        Pronunciation_US p=pServ.get(word);
+        Pronunciation_US_Bing p=pServ.get(word);
         byte[] mp3= p.getPronunciation();
         // 配置文件下载
         response.setHeader("content-type", "application/octet-stream");

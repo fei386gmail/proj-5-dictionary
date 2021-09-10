@@ -1,14 +1,17 @@
 package com.example.dictionary.control;
 
-import com.example.dictionary.common.Result;
-import com.example.dictionary.common.ResultServ;
+import com.example.dictionary.common.DetailResult;
+import com.example.dictionary.common.DetailResultServ;
+import com.example.dictionary.common.WordResult;
 import com.example.dictionary.model.Word;
+import com.example.dictionary.orm.Pronunciation_USServ;
 import com.example.dictionary.orm.WordServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.yaml.snakeyaml.util.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +23,9 @@ public class WordControl {
     @Autowired
     private WordServ wordServ;
     @Autowired
-    private ResultServ resultServ;
-
+    private DetailResultServ detailResultServ;
+    @Autowired
+    private Pronunciation_USServ pronunciation_usServ;
 
     @RequestMapping("/dic")
     public String index()
@@ -31,23 +35,28 @@ public class WordControl {
 
     @RequestMapping("/api/getDetail")
     @ResponseBody
-    public Result getResult(@RequestParam("ID") String id)
+    public DetailResult getResult(@RequestParam("ID") String id)
     {
-        return resultServ.getResult(id) ;
+        return detailResultServ.getResult(id) ;
     }
 
 
     @RequestMapping("/api/getData")
     @ResponseBody
-    public List<Word> getData(@RequestParam("ID") String id) throws InterruptedException {
+    public List<WordResult> getData(@RequestParam("ID") String id) throws InterruptedException {
         List<Word> words=new ArrayList<>();
 
         //如果有中文字符，则模糊查找解释
         if(isContainChinese(id))
         {
             words=wordServ.findWordWithTranslation(id);
-            return words;
-        }
+
+            List<WordResult> wordResults= new ArrayList<>();
+            for (Word w: words
+            ) {
+                wordResults.add(new WordResult(w.getWord(),w.getTranslation(),pronunciation_usServ.havePronunciation(w.getWord())));
+            }
+            return wordResults;        }
 
         //如果不包含*，则进行精确查找
         if(!id.contains("*"))
@@ -77,8 +86,12 @@ public class WordControl {
                 words=wordServ.findWordWithPrefixAndSuffix(id);
             }
         }
-
-        return words;
+        List<WordResult> wordResults= new ArrayList<>();
+        for (Word w: words
+             ) {
+            wordResults.add(new WordResult(w.getWord(),w.getTranslation(),pronunciation_usServ.havePronunciation(w.getWord())));
+        }
+        return wordResults;
     }
     public static boolean isContainChinese(String str) {
 
