@@ -1,5 +1,6 @@
 com/example/dictionary/ControlTest.class
+com/example/dictionary/TEST.class
+com/example/dictionary/WebSpider_pronunciation.class
 com/example/dictionary/WebSpider.class
 com/example/dictionary/ServTest.class
-com/example/dictionary/WordPageSearch.class
 com/example/dictionary/crypt.class

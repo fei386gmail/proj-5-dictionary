@@ -4,14 +4,13 @@ import com.example.dictionary.common.DetailResult;
 import com.example.dictionary.common.DetailResultServ;
 import com.example.dictionary.common.WordResult;
 import com.example.dictionary.model.Word;
-import com.example.dictionary.orm.Pronunciation_USServ;
+import com.example.dictionary.orm.Pronunciation_US_1_Serv;
 import com.example.dictionary.orm.WordServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.yaml.snakeyaml.util.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +24,7 @@ public class WordControl {
     @Autowired
     private DetailResultServ detailResultServ;
     @Autowired
-    private Pronunciation_USServ pronunciation_usServ;
+    private Pronunciation_US_1_Serv pronunciation_1Serv;
 
     @RequestMapping("/dic")
     public String index()
@@ -54,7 +53,7 @@ public class WordControl {
             List<WordResult> wordResults= new ArrayList<>();
             for (Word w: words
             ) {
-                wordResults.add(new WordResult(w.getWord(),w.getTranslation(),pronunciation_usServ.havePronunciation(w.getWord())));
+                wordResults.add(new WordResult(w.getWord(),w.getTranslation(), pronunciation_1Serv.havePronunciation(w.getWord())));
             }
             return wordResults;        }
 
@@ -89,7 +88,7 @@ public class WordControl {
         List<WordResult> wordResults= new ArrayList<>();
         for (Word w: words
              ) {
-            wordResults.add(new WordResult(w.getWord(),w.getTranslation(),pronunciation_usServ.havePronunciation(w.getWord())));
+            wordResults.add(new WordResult(w.getWord(),w.getTranslation(), pronunciation_1Serv.havePronunciation(w.getWord())));
         }
         return wordResults;
     }

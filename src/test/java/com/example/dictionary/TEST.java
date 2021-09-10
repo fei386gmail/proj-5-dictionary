@@ -1,10 +1,6 @@
 package com.example.dictionary;
 
-import com.example.dictionary.common.TablePageable;
-import com.example.dictionary.model.Synonym;
-import com.example.dictionary.model.Word;
-import com.example.dictionary.orm.Pronunciation_USServ;
-import com.example.dictionary.orm.SynonymServ;
+import com.example.dictionary.orm.Pronunciation_US_1_Serv;
 import com.example.dictionary.orm.WordServ;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -13,8 +9,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +19,7 @@ import java.util.regex.Pattern;
 class TEST {
 
     @Autowired
-    private Pronunciation_USServ pronunciation_usServ;
+    private Pronunciation_US_1_Serv pronunciation_1Serv;
     @Autowired
     private WordServ wordServ;
 

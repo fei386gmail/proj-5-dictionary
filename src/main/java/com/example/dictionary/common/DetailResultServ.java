@@ -18,7 +18,7 @@ public class DetailResultServ {
     @Autowired
     private CollocationServ collocationServ;
     @Autowired
-    private Pronunciation_USServ pronunciation_usServ;
+    private Pronunciation_US_1_Serv pronunciation_1Serv;
 
     public DetailResult getResult(String id)
     {
@@ -26,7 +26,7 @@ public class DetailResultServ {
         String synonym=synonymServ.findSynonym(id);
         String antonym=antonymServ.findAntonym(id);
         String collocation=collocationServ.findCollations(id);
-        boolean pronunciation=pronunciation_usServ.havePronunciation(id);
+        boolean pronunciation= pronunciation_1Serv.havePronunciation(id);
         return new DetailResult(word.getWord(),word.getTranslation(),synonym,antonym,collocation);
     }
 }
