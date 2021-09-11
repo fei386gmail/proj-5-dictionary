@@ -1,14 +1,20 @@
 package com.example.dictionary;
 
-import com.example.dictionary.orm.Pronunciation_US_1_Serv;
-import com.example.dictionary.orm.WordServ;
+import com.example.dictionary.model.Antonym;
+import com.example.dictionary.model.Collocation;
+import com.example.dictionary.model.Synonym;
+import com.example.dictionary.model.Word;
+import com.example.dictionary.orm.*;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,47 +28,89 @@ class TEST {
     private Pronunciation_US_1_Serv pronunciation_1Serv;
     @Autowired
     private WordServ wordServ;
+    @Autowired
+    private SynonymServ synonymServ;
+    @Autowired
+    private AntonymServ antonymServ;
+    @Autowired
+    private CollocationServ collocationServ;
 
     private WebDriver webDriver;
 
     @Test
     void contextLoads() {
-        System.setProperty("webdriver.chrome.driver","/Users/chenfei/OneDrive/IDEAProject/proj 5 dictionary/lib/chromedriver");
+        //参数
+        int startPage=0;
+        int wordsPerPage=100;
 
-        webDriver=new ChromeDriver();
-        webDriver.get("https://cn.bing.com/dict/search?q=reverse&FORM=HDRSC6");
-        List<WebElement> divs= webDriver.findElements(new By.ByXPath("//div[@class='hd_prUS b_primtxt']"));
-        for (WebElement t: divs
-             ) {
-            if(t.getText().contains("美"))
+        //查询分页数量
+        PageRequest pageRequest=PageRequest.of(0,wordsPerPage);
+        Page<Word> page=wordServ.findAll(pageRequest);
+        long totalPages= page.getTotalPages();
+
+        //循环整个词库
+        for(int j=startPage;j<totalPages;j++)
+        {
+            PageRequest pageRequest1=PageRequest.of(j,wordsPerPage);
+            Page<Word> page1=wordServ.findAll(pageRequest1);
+            List<Word> words=page1.getContent();
+
+            for(int i=0;i<words.size();i++)
             {
-                List<WebElement> as=webDriver.findElements(new By.ByXPath("//a[@title='点击朗读']"));
-
-                String att= as.get(0).getAttribute("onclick");
-                System.out.println(att);
-                String url=getLinksFromString(att).get(0);
-                System.out.println(url);
-
+                // 取每个词的同义词，并对队列去重
+//                List<Synonym> synonymList=synonymServ.findAllSynonymClass(words.get(i).getWord());
+//                if(synonymList.size()>=2){
+//                    for (int k=0;k<synonymList.size();k++
+//                    ) {
+//                        Synonym a =synonymList.get(k);
+//                        for(int kk=k+1;kk<synonymList.size();kk++)
+//                        {
+//                            Synonym b=synonymList.get(kk);
+//                            if(synonymServ.compare(a,b))
+//                            {
+//                                synonymServ.delete(b);
+//                            }
+//                        }
+//                    }
+//                }
+                //取每个词的反义词，去重
+                List<Antonym> antonymList=antonymServ.findAllAntonyms(words.get(i).getWord());
+                if(antonymList.size()>=2){
+                    for (int k=0;k<antonymList.size();k++
+                    ) {
+                        Antonym a =antonymList.get(k);
+                        for(int kk=k+1;kk<antonymList.size();kk++)
+                        {
+                            Antonym b=antonymList.get(kk);
+                            if(antonymServ.compare(a,b))
+                            {
+                                antonymServ.delete(b);
+                            }
+                        }
+                    }
+                }
+                // 取每个词的搭配，去重
+                List<Collocation> collocationList=collocationServ.findAllCollations(words.get(i).getWord());
+                if(collocationList.size()>=2){
+                    for (int k=0;k<collocationList.size();k++
+                    ) {
+                        Collocation a =collocationList.get(k);
+                        for(int kk=k+1;kk<collocationList.size();kk++)
+                        {
+                            Collocation b=collocationList.get(kk);
+                            if(collocationServ.compare(a,b))
+                            {
+                                collocationServ.delete(b);
+                            }
+                        }
+                    }
+                }
 
             }
         }
 
-    }
-    //Pull all links from the body for easy retrieval
-    private ArrayList<String> getLinksFromString(String text) {
-        ArrayList<String> links = new ArrayList();
 
-        String regex ="\\(?\\b(https://|www[.])[-A-Za-z0-9+&@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#/%=~_()|]";
-        Pattern p = Pattern.compile(regex);
-        Matcher m = p.matcher(text);
-        while(m.find()) {
-            String urlStr = m.group();
-            if (urlStr.startsWith("(") && urlStr.endsWith(")"))
-            {
-                urlStr = urlStr.substring(1, urlStr.length() - 1);
-            }
-            links.add(urlStr);
-        }
-        return links;
+
+
     }
 }

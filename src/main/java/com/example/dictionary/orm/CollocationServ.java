@@ -2,6 +2,7 @@ package com.example.dictionary.orm;
 
 import com.example.dictionary.model.Antonym;
 import com.example.dictionary.model.Collocation;
+import com.example.dictionary.model.Synonym;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,5 +35,25 @@ public class CollocationServ {
             result=result.concat(" ");
         }
         return result;
+    }
+
+    public List<Collocation> findAllCollations(String word)
+    {
+        return collocationRepo.findAllByWord(word);
+    }
+
+    public boolean compare(Collocation a, Collocation b)
+    {
+        if(a.getWord().equals(b.getWord()) && a.getProperty().equals(b.getProperty()) && a.getCollocation().equals(b.getCollocation()))
+        {
+            return true;
+        }
+        else {
+            return  false;
+        }
+    }
+
+    public void delete(Collocation b) {
+        collocationRepo.delete(b);
     }
 }

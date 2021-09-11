@@ -36,4 +36,23 @@ public class AntonymServ {
         }
         return result;
     }
+
+    public List<Antonym> findAllAntonyms(String word)
+    {
+        return antonymRepo.findAllByWord(word);
+    }
+    public boolean compare(Antonym a,Antonym b)
+    {
+        if(a.getWord().equals(b.getWord()) && a.getProperty().equals(b.getProperty()) && a.getAntonym().equals(b.getAntonym()))
+        {
+            return true;
+        }
+        else {
+            return  false;
+        }
+    }
+
+    public void delete(Antonym b) {
+        antonymRepo.delete(b);
+    }
 }

@@ -50,6 +50,8 @@ public class WebSpider {
         Page<Word> page=wordServ.findAll(pageRequest);
         long totalPages= page.getTotalPages();
         System.out.println("totalPages"+totalPages);
+
+
         for (int j=0;j<totalPages;j++)
         {
 //            System.out.println("Page Number:"+j);

@@ -40,4 +40,23 @@ public class SynonymServ {
 
         return resultSynonym;
     }
+    public void delete(Synonym s)
+    {
+        synonymRepo.delete(s);
+    }
+
+    public List<Synonym> findAllSynonymClass(String word)
+    {
+        return synonymRepo.findAllByWord(word);
+    }
+    public boolean compare(Synonym a,Synonym b)
+    {
+        if(a.getWord().equals(b.getWord()) && a.getProperty().equals(b.getProperty()) && a.getSynonym().equals(b.getSynonym()))
+        {
+            return true;
+        }
+        else {
+            return  false;
+        }
+    }
 }

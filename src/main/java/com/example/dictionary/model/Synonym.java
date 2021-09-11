@@ -32,4 +32,6 @@ public class Synonym {
         this.synonym = synonym;
         this.property = property;
     }
+
+
 }
