@@ -36,7 +36,7 @@ public class WebSpider_pronunciation_2 {
     @Test
     public void ttt() throws IOException, InterruptedException {
         //参数
-        int startPage=0;
+        int startPage=318;
         int wordsPerPage=100;
 
         //开始
@@ -51,8 +51,12 @@ public class WebSpider_pronunciation_2 {
 
         // 初始化页面
         webDriver.get(" https://cn.bing.com/search?q=abuse&qs=n&form=QBRE");
+        Thread.sleep(15000);
+        // 点击国际版
         webDriver.findElement(new By.ById("est_en")).click();
         Thread.sleep(2000);
+        //找到输入框
+        WebElement input=webDriver.findElement(new By.ById("dictautodd_c"));
         //循环整个词库
         for(int j=startPage;j<totalPages;j++)
         {
@@ -63,7 +67,7 @@ public class WebSpider_pronunciation_2 {
             for(int i=0;i<words.size();i++)
             {
                 Word w=words.get(i);
-                WebElement input=webDriver.findElement(new By.ById("dictautodd_c"));
+
                 CharSequence ss=w.getWord();
                 input.clear();
                 input.sendKeys(ss);

@@ -14,6 +14,7 @@ public class WordResult {
 
     private String word;
     private String translation;
-    private boolean pronunciation;
+    private boolean pronunciation1;
+    private boolean pronunciation2;
 
 }

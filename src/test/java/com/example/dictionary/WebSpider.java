@@ -40,7 +40,7 @@ public class WebSpider {
     public void searchWordPosition()
     {
         //参数
-        String targetWord="zygophyllaceae";
+        String targetWord="excrete";
 
         //开始
         int countPage=0;

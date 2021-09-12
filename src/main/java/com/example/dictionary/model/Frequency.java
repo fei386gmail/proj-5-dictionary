@@ -14,7 +14,7 @@ public class Frequency {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
-    @Column(length=32,unique = false)
+    @Column(length=32,unique = true)
     private String word;
     @Column(length = 5)
     private String PoS;

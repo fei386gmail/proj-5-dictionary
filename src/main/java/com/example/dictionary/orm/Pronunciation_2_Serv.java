@@ -18,5 +18,13 @@ public class Pronunciation_2_Serv {
        return   pronunciation_2_repo.findByWord(word);
     }
 
-
+    public boolean havePronunciation(String word){
+        if(pronunciation_2_repo.findByWord(word)!=null)
+        {
+            return  true;
+        }
+        else {
+            return  false;
+        }
+    }
 }
