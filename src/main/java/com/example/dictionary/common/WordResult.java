@@ -16,5 +16,6 @@ public class WordResult {
     private String translation;
     private boolean pronunciation1;
     private boolean pronunciation2;
+    private int frequency;
 
 }

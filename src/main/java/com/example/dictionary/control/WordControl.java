@@ -4,6 +4,7 @@ import com.example.dictionary.common.DetailResult;
 import com.example.dictionary.common.DetailResultServ;
 import com.example.dictionary.common.WordResult;
 import com.example.dictionary.model.Word;
+import com.example.dictionary.orm.FrequencyServ;
 import com.example.dictionary.orm.Pronunciation_2_Serv;
 import com.example.dictionary.orm.Pronunciation_US_1_Serv;
 import com.example.dictionary.orm.WordServ;
@@ -28,6 +29,9 @@ public class WordControl {
     private Pronunciation_US_1_Serv pronunciation_1Serv;
     @Autowired
     private Pronunciation_2_Serv pronunciation_2_serv;
+    @Autowired
+    private FrequencyServ frequencyServ;
+
 
     @RequestMapping("/dic")
     public String index()
@@ -56,7 +60,7 @@ public class WordControl {
             List<WordResult> wordResults= new ArrayList<>();
             for (Word w: words
             ) {
-                wordResults.add(new WordResult(w.getWord(),w.getTranslation(), pronunciation_1Serv.havePronunciation(w.getWord()),pronunciation_2_serv.havePronunciation(w.getWord())));
+                wordResults.add(new WordResult(w.getWord(),w.getTranslation(), pronunciation_1Serv.havePronunciation(w.getWord()),pronunciation_2_serv.havePronunciation(w.getWord()),frequencyServ.getFrequency(w.getWord())));
             }
             return wordResults;        }
 
@@ -91,7 +95,7 @@ public class WordControl {
         List<WordResult> wordResults= new ArrayList<>();
         for (Word w: words
              ) {
-            wordResults.add(new WordResult(w.getWord(),w.getTranslation(), pronunciation_1Serv.havePronunciation(w.getWord()),pronunciation_2_serv.havePronunciation(w.getWord())));
+            wordResults.add(new WordResult(w.getWord(),w.getTranslation(), pronunciation_1Serv.havePronunciation(w.getWord()),pronunciation_2_serv.havePronunciation(w.getWord()),frequencyServ.getFrequency(w.getWord())));
         }
         return wordResults;
     }

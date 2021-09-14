@@ -19,6 +19,7 @@
       </thead>
       <tbody>
         <tr v-for="(word) in data" v-bind:key="word" @dblclick="getDetail(word.word)" >
+          
           <td style="display:flex">
             <span name="ss"   >{{word.word}}</span>
           </td>
@@ -32,6 +33,9 @@
           <td>
             <p name="tt">{{word.translation}}</p>
           </td>
+          <td name="frequency">
+              <span   v-if="word.frequency<4"><frequency :parentMessage="word.frequency"></frequency></span>
+          </td>
          
         </tr>
       </tbody>
@@ -44,9 +48,10 @@
  <script>
 import  player from '../components/mp3'
 import  player2 from '../components/mp4'
+import frequency from '../components/frequency'
 export default {
   name: 'dictionary',
-  components:{player,player2},
+  components:{player,player2,frequency},
    data() {
         return{
           data: "",
@@ -59,7 +64,6 @@ export default {
       var that=this;
         this.data="...";
         console.log("click");
-        // http://localhost:18082/api/getData
         this.axios.get('/api/getData', {
             params: {
               ID: this.w
@@ -170,5 +174,9 @@ export default {
       margin-left:4rem;
       margin-right:auto;
       text-align:left;
+    }
+    td[name="frequency"]
+    {
+      width:1rem;
     }
 </style>
