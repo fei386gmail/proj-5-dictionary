@@ -1,23 +1,23 @@
 <template>
   <div id="main" >
     <div id="search">
-      <input name="word" v-model="w" v-on:keyup.enter="getData()" >
+      <input name="word" v-model="wordInput" v-on:keyup.enter="getData()" >
       <button @click="getData()">search</button><br>
 
       <div style="padding-left:0.2rem" class="pop" v-if="showModal" @dblclick="showModal=false" >
           <span name="detail"  style="font-size:1.3rem" >{{detail.word}}</span>
-          <span name="detail" v-if="detail.synonym.length>0" style="color:green">SYNONYM:  {{detail.synonym}}</span>
-          <span name="detail" v-if="detail.antonym.length>0" style="color:brown">ANTONYM:  {{detail.antonym}}</span>
-          <span name="detail" v-if="detail.collocation.length>0" style="color:blue">COLLOCATION:   {{detail.collocation}}</span>
-          <div>
-            <tr name="detail" v-if="detail.sentences[0]"  >
+          <span name="detail" v-if="detail.synonym!==''" style="color:green">SYNONYM:  {{detail.synonym}}</span>
+          <span name="detail" v-if="detail.antonym!==''" style="color:brown">ANTONYM:  {{detail.antonym}}</span>
+          <span name="detail" v-if="detail.collocation!==''" style="color:blue">COLLOCATION:   {{detail.collocation}}</span>
+          <div >
+            <tr name="detail" v-if="detail.sentences[0]!== undefined"  >
                 <div style="display:flex">
                     <span name="detail" >   {{detail.sentences[0].sentence_english}}</span><pronunciation_sentence1 :parentMessage="detail.sentences[0].word"></pronunciation_sentence1>
                 </div>
               
                 <span name="chi_sentence_span"  >   {{detail.sentences[0].sentence_chinese}}</span>
             </tr>
-             <tr name="detail" v-if="detail.sentences[1]">
+             <tr name="detail"  v-if="detail.sentences[1]!== undefined" >
                 <div style="display:flex">
                     <span name="detail" >   {{detail.sentences[1].sentence_english}}</span><pronunciation_sentence2 :parentMessage="detail.sentences[1].word"></pronunciation_sentence2>
                 </div>
@@ -35,7 +35,7 @@
       
       </thead>
       <tbody>
-        <tr v-for="(word) in data" v-bind:key="word" @dblclick="getDetail(word.word)" >
+        <tr v-for="(word) in data" v-bind:key="word.word" @dblclick="getDetail(word.word)" >
           
           <td style="display:flex">
             <span name="ss"   >{{word.word}}</span>
@@ -82,39 +82,33 @@ export default {
   methods: {
     getData() {
       var that=this;
-        this.data="...";
-        console.log("click");
+        console.log("getData");
         this.axios.get('/api/getData', {
             params: {
-              ID: this.w
+              ID: this.wordInput
             },
           })
           .then(function (response) {
-          
             that.data=response.data;
-            console.log(response);
           })
           .catch(function (error) {
             console.log(error);
           });
     },
-    getDetail(wordDetail){
+    getDetail(word){
       var that=this;
       this.showModal=true;
-        this.detail="...";
-        this.axios.get('/api/getDetail', {
+      this.axios.get('/api/getDetail', {
             params: {
-              ID: wordDetail
+              ID: word
             },
           })
           .then(function (response) {
-          
             that.detail=response.data;
-            console.log(response);
           })
           .catch(function (error) {
             console.log(error);
-          });
+          });  
 
     }
   },

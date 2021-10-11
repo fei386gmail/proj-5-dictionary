@@ -16,9 +16,15 @@
           this.$refs.audioElm.play();
       }
     },
-    data(){
-      return{
-        srcURL:"/audioSentence2/"+this.parentMessage+".mp3"
+     computed:{
+      srcURL(){
+          return "/audioSentence2/"+this.parentMessage+".mp3"
+      } 
+    },
+    watch: {
+      parentMessage(n){
+         console.info('new value ', n);
+         this.$refs.audioElm.load();                     
       }
     }
 
@@ -30,7 +36,7 @@
     width:1rem;
     height:0.8rem;
     padding-top: 0rem;
-      opacity: 50%;
+  
   }
   img:hover{
     opacity: 0.3

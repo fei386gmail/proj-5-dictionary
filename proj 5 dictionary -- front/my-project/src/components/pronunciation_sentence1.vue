@@ -10,18 +10,26 @@
 <script>
   export default {
     name:'player',
-    props: ['parentMessage'],
+    props: {
+      parentMessage:String
+    },
     methods:{
       play(){
           this.$refs.audioElm.play();
       }
     },
-    data(){
-      return{
-        srcURL:"/audioSentence1/"+this.parentMessage+".mp3"
+    computed:{
+      srcURL(){
+          return "/audioSentence1/"+this.parentMessage+".mp3"
+      } 
+    },
+    watch: {
+      parentMessage(n){
+         console.info('new value ', n);
+         this.$refs.audioElm.load();                     
       }
     }
-
+  
   }
 </script>
 <style>
@@ -30,7 +38,7 @@
     width:1rem;
     height:0.8rem;
     padding-top: 0rem;
-      opacity: 50%;
+    
   }
   img:hover{
     opacity: 0.3
