@@ -36,11 +36,11 @@ public class WebSpider_pronunciation_2 {
     @Test
     public void ttt() throws IOException, InterruptedException {
         //参数
-        int startPage=318;
+        int startPage=1006;
         int wordsPerPage=100;
 
         //开始
-        System.setProperty("webdriver.chrome.driver","/Users/chenfei/OneDrive/IDEAProject/proj 5 dictionary/lib/chromedriver");
+        System.setProperty("webdriver.chrome.driver","/Users/chenfei/Documents/GitHub/proj-5-dictionary/lib/chromedriver94.0.4606.61");
         webDriver=new ChromeDriver();
 
 
@@ -51,7 +51,7 @@ public class WebSpider_pronunciation_2 {
 
         // 初始化页面
         webDriver.get(" https://cn.bing.com/search?q=abuse&qs=n&form=QBRE");
-        Thread.sleep(15000);
+        Thread.sleep(5000);
         // 点击国际版
         webDriver.findElement(new By.ById("est_en")).click();
         Thread.sleep(2000);
@@ -76,14 +76,25 @@ public class WebSpider_pronunciation_2 {
                 Thread.sleep(2000);
 
                 WebElement audio;
-                try{
-                     audio=webDriver.findElement(new By.ByXPath("//audio[@preload='none']"));
-                }catch (NoSuchElementException e)
+                String mp3url;
+                while (true)
                 {
-                    continue;
+                    try{
+                        audio=webDriver.findElement(new By.ByXPath("//audio[@preload='none']"));
+                        mp3url=audio.getAttribute("src");
+                        savePronunciation_US(w.getWord(),mp3url);
+                        break;
+                    }catch (NoSuchElementException e)
+                    {
+                        break;
+                    }
+                    catch (TimeoutException e)
+                    {
+
+                    }
                 }
-                String mp3url=audio.getAttribute("src");
-                savePronunciation_US(w.getWord(),mp3url);
+
+
 
             }
         }
@@ -110,6 +121,12 @@ public class WebSpider_pronunciation_2 {
             { e.printStackTrace(); }
             catch (FileNotFoundException e )
             {e.printStackTrace();
+
+                return;
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
                 return;
             }
         }

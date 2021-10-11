@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @Data
 @AllArgsConstructor
@@ -17,5 +19,5 @@ public class DetailResult {
     private String synonym;
     private String antonym;
     private String collocation;
-
+    private List<SentenceResult> sentences;
 }

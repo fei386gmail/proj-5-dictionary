@@ -40,7 +40,7 @@ public class WebSpider {
     public void searchWordPosition()
     {
         //参数
-        String targetWord="excrete";
+        String targetWord="thoroughly";
 
         //开始
         int countPage=0;
