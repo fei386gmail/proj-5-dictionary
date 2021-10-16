@@ -43,7 +43,7 @@ public class PronunciationControl {
         OutputStream os = response.getOutputStream();
         int i = mp3.length;
         os.write(mp3, 0, i);
-
+        os.close();
     }
 
     @RequestMapping("/audio2/{word}.mp3")

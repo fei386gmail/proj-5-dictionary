@@ -10,7 +10,9 @@
 <script>
   export default {
     name:'player',
-    props: ['parentMessage'],
+    props: {
+      parentMessage:String
+    },
     methods:{
       play(){
           this.$refs.audioElm.play();

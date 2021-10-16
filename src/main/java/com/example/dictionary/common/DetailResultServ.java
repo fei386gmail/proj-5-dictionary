@@ -26,7 +26,8 @@ public class DetailResultServ {
     private Sentence1Serv sentence1Serv;
     @Autowired
     private Sentence2Serv sentence2Serv;
-
+    @Autowired
+    private PictureServ pictureServ;
     public DetailResult getResult(String id)
     {
         Word word=wordServ.findOneById(id);
@@ -40,7 +41,9 @@ public class DetailResultServ {
         sentenceResultList.add(this.copyToSentenceResult(sentence1));
         if(sentence2!=null)
         sentenceResultList.add(this.copyToSentenceResult(sentence2));
-        return new DetailResult(word.getWord(),word.getTranslation(),synonym,antonym,collocation,sentenceResultList);
+        boolean hasPic=pictureServ.hasPic(id);
+
+        return new DetailResult(word.getWord(),word.getTranslation(),synonym,antonym,collocation,sentenceResultList,hasPic);
     }
     private SentenceResult copyToSentenceResult(Sentence1 sentence1)
     {
