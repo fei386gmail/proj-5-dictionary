@@ -1,6 +1,6 @@
 <template>
   <div>
-    <img name="picture" ref="picture" :src="srcURL"/>
+    <img name="picture" ref="pictureRef" :src="srcURL"/>
   </div>
 
 </template>
@@ -16,9 +16,8 @@
       } 
     },
     watch: {
-      parentMessage(n){
-         console.info('new value ', n);
-         this.$refs.picture.load();                     
+      parentMessage(){
+     
       }
     }
   }
@@ -27,5 +26,10 @@
   img[name="picture"]{
     width:10rem;
     height:10rem;
+    margin-right:0.5rem;
+    margin-top:0.5rem;
+  }
+  img:hover{
+    
   }
 </style>
