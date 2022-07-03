@@ -37,14 +37,11 @@ public class Webspider_sentence {
     @Test
     public void test() throws InterruptedException, IOException {
         //参数
-        int startPage=927;
+        int startPage=0;
         int wordsPerPage=100;
-
         //开始
-        System.setProperty("webdriver.chrome.driver","/Users/chenfei/Documents/GitHub/proj-5-dictionary/lib/chromedriver94.0.4606.61");
+        System.setProperty("webdriver.chrome.driver","/Users/chenfei/Documents/GitHub/proj-5-dictionary/lib/chromedriver");
         webDriver = new ChromeDriver();
-
-
         //查询分页数量
         PageRequest pageRequest=PageRequest.of(startPage,wordsPerPage);
         Page<Word> page=wordServ.findAll(pageRequest);

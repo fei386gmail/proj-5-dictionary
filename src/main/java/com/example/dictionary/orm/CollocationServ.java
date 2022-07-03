@@ -56,4 +56,9 @@ public class CollocationServ {
     public void delete(Collocation b) {
         collocationRepo.delete(b);
     }
+
+    public Boolean isExist(String word){
+         return collocationRepo.existsByWord(word);
+    }
+
 }

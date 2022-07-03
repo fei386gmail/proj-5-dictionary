@@ -36,5 +36,8 @@ public class Sentence1Serv {
     public Sentence1 findSentenceByWord(String word){
         return  sentence1Repo.findSentenceByWord(word);
     }
-
+    public Boolean isExist(String word)
+    {
+        return  sentence1Repo.existsByWord(word);
+    }
 }

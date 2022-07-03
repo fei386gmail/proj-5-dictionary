@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.core.AutoConfigureCache;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.util.StringUtils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -23,6 +24,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @SpringBootTest
 public class WebSpider_pronunciation_2 {
@@ -36,11 +39,11 @@ public class WebSpider_pronunciation_2 {
     @Test
     public void ttt() throws IOException, InterruptedException {
         //参数
-        int startPage=1006;
+        int startPage=1110;
         int wordsPerPage=100;
 
         //开始
-        System.setProperty("webdriver.chrome.driver","/Users/chenfei/Documents/GitHub/proj-5-dictionary/lib/chromedriver94.0.4606.61");
+        System.setProperty("webdriver.chrome.driver","/Users/chenfei/Documents/GitHub/proj-5-dictionary/lib/chromedriver");
         webDriver=new ChromeDriver();
 
 
@@ -50,13 +53,9 @@ public class WebSpider_pronunciation_2 {
         long totalPages= page.getTotalPages();
 
         // 初始化页面
-        webDriver.get(" https://cn.bing.com/search?q=abuse&qs=n&form=QBRE");
-        Thread.sleep(5000);
-        // 点击国际版
-        webDriver.findElement(new By.ById("est_en")).click();
-        Thread.sleep(2000);
-        //找到输入框
-        WebElement input=webDriver.findElement(new By.ById("dictautodd_c"));
+        webDriver.get(" https://dict.youdao.com/result?word=abuse&lang=en");
+        Thread.sleep(1000);
+
         //循环整个词库
         for(int j=startPage;j<totalPages;j++)
         {
@@ -67,41 +66,37 @@ public class WebSpider_pronunciation_2 {
             for(int i=0;i<words.size();i++)
             {
                 Word w=words.get(i);
+                if(pronunciation_2_serv.isExist(w.getWord())) continue;
+                System.out.println("query:"+w.getWord());
 
-                CharSequence ss=w.getWord();
-                input.clear();
-                input.sendKeys(ss);
-                List<WebElement> divs=webDriver.findElements(new By.ByXPath("//div[@role='button']"));
-                divs.get(1).click();
-                Thread.sleep(2000);
+                webDriver.get(" https://dict.youdao.com/result?word="+w.getWord()+"&lang=en");
 
-                WebElement audio;
-                String mp3url;
-                while (true)
+                WebElement title;
+                List<WebElement> audios;
+                try{
+                     title=webDriver.findElement(new By.ByClassName("title"));
+                     audios = title.findElements(new By.ByClassName("pronounce"));
+                }catch (Exception e)
                 {
-                    try{
-                        audio=webDriver.findElement(new By.ByXPath("//audio[@preload='none']"));
-                        mp3url=audio.getAttribute("src");
-                        savePronunciation_US(w.getWord(),mp3url);
-                        break;
-                    }catch (NoSuchElementException e)
-                    {
-                        break;
-                    }
-                    catch (TimeoutException e)
-                    {
+                    continue;
+                }
+                String mp3url="";
+                if(audios.size()<=2)
+                {
+                     mp3url="https://dict.youdao.com/dictvoice?audio="+w.getWord()+"&type=2";
 
-                    }
+                }
+                else {
+                    continue;
                 }
 
-
+                savePronunciation_US(w.getWord(), mp3url);
 
             }
         }
-
-
-
     }
+
+
 
     public void savePronunciation_US(String word,String urlString) throws IOException, InterruptedException {
 
@@ -121,7 +116,6 @@ public class WebSpider_pronunciation_2 {
             { e.printStackTrace(); }
             catch (FileNotFoundException e )
             {e.printStackTrace();
-
                 return;
             }
             catch (IOException e)
@@ -136,6 +130,7 @@ public class WebSpider_pronunciation_2 {
         Pronunciation_US_2 pronunciation_us_2 =new Pronunciation_US_2(word,pronun);
         try{
             pronunciation_2_serv.save(pronunciation_us_2);
+            System.out.println("save pronunciation of:"+word);
         }
         catch (Exception e){
         }

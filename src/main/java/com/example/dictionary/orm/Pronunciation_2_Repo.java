@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface Pronunciation_2_Repo extends JpaRepository<Pronunciation_US_2,Integer> {
 
     public Pronunciation_US_2 findByWord(String word);
+    public Boolean existsByWord(String word);
 }

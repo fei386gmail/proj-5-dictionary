@@ -59,4 +59,9 @@ public class SynonymServ {
             return  false;
         }
     }
+
+    public Boolean isExist(String word)
+    {
+        return  synonymRepo.existsByWord(word);
+    }
 }

@@ -14,4 +14,5 @@ public interface AntonymRepo extends JpaRepository<Antonym,Integer> {
     public List<String> getPropertiesByWord(String word);
 
     public List<Antonym> findAllByWord(String word);
+    public Boolean existsByWord(String word);
 }

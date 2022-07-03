@@ -27,4 +27,8 @@ public class Pronunciation_2_Serv {
             return  false;
         }
     }
+    public Boolean isExist(String word)
+    {
+        return  pronunciation_2_repo.existsByWord(word);
+    }
 }

@@ -20,16 +20,15 @@ public class PictureControl {
     @RequestMapping("/picture/{word}.png")
     public void getPronunciation(@PathVariable("word")String word, HttpServletResponse response) throws IOException {
         Picture p=pictureServ.getPic(word);
-        byte[] mp3= p.getPicture();
+        byte[] picture= p.getPicture();
         // 配置文件下载
         response.setHeader("content-type", "application/octet-stream");
         response.setContentType("application/octet-stream");
         // 下载文件能正常显示中文
         response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("fileName", "UTF-8"));
-
         OutputStream os = response.getOutputStream();
-        int i = mp3.length;
-        os.write(mp3, 0, i);
+        int i = picture.length;
+        os.write(picture, 0, i);
         os.close();
     }
 }

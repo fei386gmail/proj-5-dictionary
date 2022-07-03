@@ -15,4 +15,5 @@ public interface SynonymRepo extends JpaRepository<Synonym,Integer> {
     public List<String> getPropertiesByWord(String word);
 
     public List<Synonym> findAllByWord(String word);
+    public Boolean existsByWord(String word);
 }

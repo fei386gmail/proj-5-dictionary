@@ -10,6 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
+
 @SpringBootTest
 public class ServTest {
 
@@ -25,13 +27,16 @@ public class ServTest {
     private DetailResultServ resultServ;
     @Autowired
     private FrequencyServ frequencyServ;
+    @Autowired
+    private Sentence1Serv sentence1Serv;
 
     @Test
     public void ss()
     {
-        Frequency s=frequencyServ.findByWord("book");
-        System.out.println(s);
+//
 
+        Boolean b= sentence1Serv.isExist("bookkkk");
+         System.out.println(b);
 
     }
 }

@@ -10,5 +10,5 @@ import java.util.List;
 public interface Sentence1Repo extends JpaRepository<Sentence1,Integer> {
     public Sentence1 findSentenceByWord(String word);
     public List<Sentence1> findAllByWord(String word);
-
+    public Boolean existsByWord(String word);
 }

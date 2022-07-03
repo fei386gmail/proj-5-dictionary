@@ -1,5 +1,6 @@
 package com.example.dictionary.orm;
 
+import com.example.dictionary.model.Frequency;
 import com.example.dictionary.model.Word;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -17,6 +18,8 @@ import com.example.dictionary.orm.WordRepo;
 public class WordServ {
     @Autowired
     private WordRepo wordRepo;
+    @Autowired
+    private FrequencyServ frequencyServ;
 
     public Page<Word> findAll(Pageable pageable){
         return wordRepo.findAll(pageable);
@@ -24,47 +27,31 @@ public class WordServ {
 
     public Word findOneById(String id) {
         Optional<Word> o= wordRepo.findById(id);
+        if(o.isPresent())
         return o.get();
-    }
+        else
+            return null;
 
+    }
+    public int getTotalNumber()
+    {
+        return (int) wordRepo.count();
+    }
     public List<Word> findWords(String id)
     {
-        Word word=new Word();
-        word.setWord(id);
-        ExampleMatcher matcher = ExampleMatcher.matching()
-//                .withMatcher("username", ExampleMatcher.GenericPropertyMatchers.startsWith())//模糊查询匹配开头，即{username}%
-                .withMatcher("word" , ExampleMatcher.GenericPropertyMatchers.contains())//全部模糊查询，即%{address}%
-                .withIgnorePaths("translation");
-        Example<Word> example = Example.of(word ,matcher);
-        List<Word> words=wordRepo.findAll(example);
-        return  words;
+        return wordRepo.findAllByWordContainsOrderByTranslationDesc(id);
     }
 
     public List<Word> findWordWithPrefix(String id)
     {
-        Word word=new Word();
-        word.setWord(id);
-        ExampleMatcher matcher = ExampleMatcher.matching()
-                .withMatcher("word", ExampleMatcher.GenericPropertyMatchers.startsWith())//模糊查询匹配开头，即{username}%
-//                .withMatcher("word" , ExampleMatcher.GenericPropertyMatchers.contains())//全部模糊查询，即%{address}%
-                .withIgnorePaths("translation");
-        Example<Word> example = Example.of(word ,matcher);
-        List<Word> words=wordRepo.findAll(example);
-        return  words;
+
+        return  wordRepo.findAllByWordStartingWithOrderByTranslationDesc(id);
     }
 
     public List<Word> findWordWithSuffix(String id)
     {
-        Word word=new Word();
-        word.setWord(id);
-        ExampleMatcher matcher = ExampleMatcher.matching()
-//                .withMatcher("word", ExampleMatcher.GenericPropertyMatchers.startsWith())//模糊查询匹配开头，即{username}%
-                .withMatcher("word",ExampleMatcher.GenericPropertyMatchers.endsWith())  //模糊查询匹配结尾，
-//                .withMatcher("word" , ExampleMatcher.GenericPropertyMatchers.contains())//全部模糊查询，即%{address}%
-                .withIgnorePaths("translation");
-        Example<Word> example = Example.of(word ,matcher);
-        List<Word> words=wordRepo.findAll(example);
-        return  words;
+
+        return  wordRepo.findAllByWordEndingWithOrderByTranslationDesc(id);
     }
 
     public List<Word> findWordWithPrefixAndSuffix(String id)
@@ -75,22 +62,10 @@ public class WordServ {
         Word word2=new Word();
 
         word1.setWord(ss[0]);
-        ExampleMatcher matcher1 = ExampleMatcher.matching()
-                .withMatcher("word", ExampleMatcher.GenericPropertyMatchers.startsWith())//模糊查询匹配开头，即{username}%
-//                .withMatcher("word",ExampleMatcher.GenericPropertyMatchers.endsWith())  //模糊查询匹配结尾，
-//                .withMatcher("word" , ExampleMatcher.GenericPropertyMatchers.contains())//全部模糊查询，即%{address}%
-                .withIgnorePaths("translation");
-        Example<Word> example1 = Example.of(word1 ,matcher1);
-        List<Word> words1=wordRepo.findAll(example1);
+        List<Word> words1=wordRepo.findAllByWordStartingWithOrderByTranslationDesc(word1.getWord());
 
         word2.setWord(ss[1]);
-        ExampleMatcher matcher2 = ExampleMatcher.matching()
-//                .withMatcher("word", ExampleMatcher.GenericPropertyMatchers.startsWith())//模糊查询匹配开头，即{username}%
-                .withMatcher("word",ExampleMatcher.GenericPropertyMatchers.endsWith())  //模糊查询匹配结尾，
-//                .withMatcher("word" , ExampleMatcher.GenericPropertyMatchers.contains())//全部模糊查询，即%{address}%
-                .withIgnorePaths("translation");
-        Example<Word> example2 = Example.of(word2 ,matcher2);
-        List<Word> words2=wordRepo.findAll(example2);
+        List<Word> words2=wordRepo.findAllByWordEndingWithOrderByTranslationDesc(word2.getWord());
 
         List<Word> results=new ArrayList<>();
         for (Word w1:words1
@@ -106,17 +81,35 @@ public class WordServ {
 
     public List<Word> findWordWithTranslation(String id)
     {
-        Word word=new Word();
-        word.setTranslation(id);
-        ExampleMatcher matcher = ExampleMatcher.matching()
-//                .withMatcher("word", ExampleMatcher.GenericPropertyMatchers.startsWith())//模糊查询匹配开头，即{username}%
-//                .withMatcher("translation",ExampleMatcher.GenericPropertyMatchers.endsWith())  //模糊查询匹配结尾，
-                .withMatcher("translation" , ExampleMatcher.GenericPropertyMatchers.contains())//全部模糊查询，即%{address}%
-                .withIgnorePaths("word");
-        Example<Word> example = Example.of(word ,matcher);
-        List<Word> words=wordRepo.findAll(example);
-        return  words;
+//
+        return  wordRepo.findAllByTranslationContaining(id);
     }
 
+    public Boolean isExist(String w)
+    {
+        Word word=new Word();
+        word.setWord(w);
+        Example<Word> example=Example.of (word);
+        return  wordRepo.exists(example);
+    }
 
+    public void  save(Word word)
+    {
+        wordRepo.save(word);
+    }
+
+    public List<Word> findWordsFromFrequencies(List<Frequency> frequencies)
+    {
+        List<Word> wordList=new ArrayList<>();
+        for (Frequency f: frequencies
+             ) {
+            System.out.println(f.getWord());
+            Optional<Word> optionalWord= wordRepo.findById(f.getWord());
+            if(optionalWord.isPresent())
+            {
+                wordList.add(optionalWord.get());
+            }
+        }
+        return wordList;
+    }
 }

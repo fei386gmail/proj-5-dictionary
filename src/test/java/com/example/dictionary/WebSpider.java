@@ -9,10 +9,7 @@ import com.example.dictionary.orm.CollocationServ;
 import com.example.dictionary.orm.SynonymServ;
 import com.example.dictionary.orm.WordServ;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,7 +37,7 @@ public class WebSpider {
     public void searchWordPosition()
     {
         //参数
-        String targetWord="waterfront";
+        String targetWord="singed";
 
         //开始
         int countPage=0;
@@ -79,11 +76,11 @@ public class WebSpider {
     public void searchAndSave()
     {
         //参数
-        int startPage=30;
+        int startPage=300;
         int wordsPerPage=100;
 
         //开始
-        System.setProperty("webdriver.chrome.driver","/Users/chenfei/OneDrive/IDEAProject/proj 5 dictionary/lib/chromedriver");
+        System.setProperty("webdriver.chrome.driver","/Users/chenfei/Documents/GitHub/proj-5-dictionary/lib/chromedriver");
         webDriver=new ChromeDriver();
         PageRequest pageRequest=PageRequest.of(0,wordsPerPage);
         Page<Word> page=wordServ.findAll(pageRequest);
@@ -96,10 +93,24 @@ public class WebSpider {
             List<Word> words=page1.getContent();
             for(int i=0;i<words.size();i++)
             {
-                Word w=words.get(i);
-                webDriver.get("https://cn.bing.com/dict/search?q="+w.getWord()+"&FORM=HDRSC6");
 
-                List<WebElement> h2s= webDriver.findElements(new By.ByXPath("//h2[@class='b_primtxt']"));
+                Word w=words.get(i);
+                if (!collocationServ.isExist(w.getWord()) && !antonymServ.isExist(w.getWord()) && synonymServ.isExist(w.getWord())) {
+                    continue;
+                }
+                else {
+                    System.out.println("query :"+w.getWord());
+                }
+                List<WebElement> h2s;
+                try {
+                    webDriver.get("https://cn.bing.com/dict/search?q="+w.getWord()+"&FORM=HDRSC6");
+                    h2s= webDriver.findElements(new By.ByXPath("//h2[@class='b_primtxt']"));
+                }
+                catch (Exception e)
+                {
+                    continue;
+                }
+
                 for (WebElement t: h2s
                      ) {
                     switch (t.getText()){
@@ -114,7 +125,12 @@ public class WebSpider {
                             break;
                         }
                         case "搭配":{
-                            t.click();
+                            try {
+                                t.click();
+                            }catch (ElementClickInterceptedException e)
+                            {
+                                continue;
+                            }
                             saveCollocations(w.getWord());
                             break;
                         }
@@ -161,7 +177,9 @@ public class WebSpider {
 //                System.out.println(syn.getText());
                 Synonym synonym=new Synonym( word,syn.getText(),property);
                 synonymServ.newSynonym(synonym);
-             }
+                System.out.println("save Synonym of:"+word);
+
+            }
         }
     }
 
@@ -181,6 +199,7 @@ public class WebSpider {
             WebElement property=propertyWebElement.findElement(new By.ByClassName("b_dictHighlight"));
             saveAntonym(word,propertyWebElement,property.getText());
 
+
         }
     }
     public   void saveAntonym(String word,WebElement propertyWebElement,String property)
@@ -195,6 +214,7 @@ public class WebSpider {
 //                System.out.println(syn.getText());
                 Antonym antonym=new Antonym(word,syn.getText(),property);
                 antonymServ.newAntonym(antonym);
+                System.out.println("save Antonym of:"+word);
             }
         }
     }
@@ -229,6 +249,8 @@ public class WebSpider {
 //                System.out.println(syn.getText());
                 Collocation collocation=new Collocation(word,syn.getText(),property);
                 collocationServ.newCollocation(collocation);
+                System.out.println("save Collocation of:"+word);
+
             }
         }
     }

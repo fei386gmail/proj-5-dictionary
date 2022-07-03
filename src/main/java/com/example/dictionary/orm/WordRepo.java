@@ -14,6 +14,8 @@ import java.util.List;
 @Repository
 public interface WordRepo extends JpaRepository<Word,String> {
 
-
-
+    public List<Word> findAllByWordContainsOrderByTranslationDesc(String id);
+    public List<Word> findAllByWordStartingWithOrderByTranslationDesc(String id);
+    public List<Word> findAllByWordEndingWithOrderByTranslationDesc(String id);
+    public List<Word> findAllByTranslationContaining(String id);
 }

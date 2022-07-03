@@ -31,11 +31,11 @@ public class WebSpider_pronunciation_1 {
     @Test
     public void test() throws IOException, InterruptedException {
         //参数
-        int startPage=1039;
+        int startPage=0;
         int wordsPerPage=100;
 
         //开始
-        System.setProperty("webdriver.chrome.driver","/Users/chenfei/OneDrive/IDEAProject/proj 5 dictionary/lib/chromedriver");
+        System.setProperty("webdriver.chrome.driver","/Users/chenfei/Documents/GitHub/proj-5-dictionary/lib/chromedriver");
         webDriver=new ChromeDriver();
 
         //查询分页数量
@@ -52,6 +52,9 @@ public class WebSpider_pronunciation_1 {
             for(int i=0;i<words.size();i++)
             {
                 Word w=words.get(i);
+
+                if(pronunciation_1Serv.isExist(w.getWord())) continue;
+                System.out.println("query:"+w.getWord());
                 while (true){
                     try {
                         webDriver.get("https://cn.bing.com/dict/search?q="+w.getWord()+"&FORM=HDRSC6");
@@ -115,6 +118,7 @@ public class WebSpider_pronunciation_1 {
         Pronunciation_US_1 pronunciation_usBing =new Pronunciation_US_1(word,pronun);
         try{
             pronunciation_1Serv.save(pronunciation_usBing);
+            System.out.println("Save pronunciation of:" +word);
         }
         catch (Exception e){
         }

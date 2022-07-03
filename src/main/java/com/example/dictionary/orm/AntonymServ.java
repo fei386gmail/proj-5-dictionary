@@ -55,4 +55,8 @@ public class AntonymServ {
     public void delete(Antonym b) {
         antonymRepo.delete(b);
     }
+
+    public Boolean isExist(String word){
+        return antonymRepo.existsByWord(word);
+    }
 }

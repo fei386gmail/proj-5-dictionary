@@ -15,4 +15,5 @@ public interface CollocationRepo extends JpaRepository<Collocation,Integer> {
     public List<String> getPropertiesByWord(String word);
 
     public List<Collocation> findAllByWord(String word);
+    public Boolean  existsByWord(String word);
 }
