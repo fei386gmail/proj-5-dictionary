@@ -9,9 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import com.example.dictionary.orm.WordRepo;
 @Service
@@ -120,5 +118,11 @@ public class WordServ {
             return w.get().getRemember();
         }
         else return false;
+    }
+    public List<Word> getRecallWords()
+    {
+        List<Word> results= wordRepo.findAllByRememberIsTrue();
+        Collections.shuffle(results);
+        return results;
     }
 }

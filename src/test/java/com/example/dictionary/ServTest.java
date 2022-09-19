@@ -35,8 +35,8 @@ public class ServTest {
     {
 //
 
-        Boolean b= sentence1Serv.isExist("bookkkk");
-         System.out.println(b);
+       List<Word>  reee=wordServ.getRecallWords();
+         System.out.println(reee);
 
     }
 }

@@ -65,9 +65,20 @@ public class WordControl {
 
     @RequestMapping("/api/getData")
     @ResponseBody
-    public List<WordResult> getData(@RequestParam("ID") String id,@RequestParam("highFrequentCheck") Boolean highFrequentCheck) throws InterruptedException {
+    public List<WordResult> getData(@RequestParam("ID") String id,@RequestParam("highFrequentCheck") Boolean highFrequentCheck,@RequestParam("recallCheck") Boolean recallCheck) throws InterruptedException {
         List<Word> words=new ArrayList<>();
 
+        if(recallCheck==true)
+        {
+            words=wordServ.getRecallWords();
+            List<WordResult> wordResults= new ArrayList<>();
+            for (int i=0;i<100;i++) {
+                Word w=words.get(i);
+                wordResults.add(new WordResult(w.getWord(),w.getTranslation(), pronunciation_1Serv.havePronunciation(w.getWord()),pronunciation_2_serv.havePronunciation(w.getWord()),frequencyServ.getFrequency(w.getWord()),w.getRemember()));
+            }
+            if(wordResults.size()==0) return nullWordResults ;
+            return wordResults;
+        }
 
         //如果有中文字符，则模糊查找解释
         // 如果高频选中，则从高频表中查找单词
