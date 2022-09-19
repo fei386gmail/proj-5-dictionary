@@ -18,10 +18,10 @@
             <entry key="com.zeroturnaround.jrebel.remoting.DeleteUnindexedFiles" value="false" />
             <entry key="com.zeroturnaround.jrebel.remoting.ModuleRemoteServerSelection" value="off" />
             <entry key="jrebelEnabled" value="true" />
-            <entry key="lastExternalPluginCheckTime" value="1656343779542" />
+            <entry key="lastExternalPluginCheckTime" value="1659362856002" />
           </map>
         </option>
-        <option name="version" value="1" />
+        <option name="version" value="2" />
       </configuration>
     </facet>
     <facet type="jpa" name="JPA">
@@ -104,7 +104,6 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-context:5.3.9" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:5.3.9" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: mysql:mysql-connector-java:8.0.26" level="project" />
-    <orderEntry type="library" name="Maven: org.mariadb.jdbc:mariadb-java-client:2.7.3" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-jdbc:2.5.3" level="project" />
     <orderEntry type="library" name="Maven: com.zaxxer:HikariCP:4.0.3" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.32" level="project" />

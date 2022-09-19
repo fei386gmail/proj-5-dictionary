@@ -113,7 +113,19 @@ public class FrequencyServ {
             if( getFrequency(f.getWord())<=2) frequencyNew.add(f);
         }
         return  frequencyNew;
+    }
 
+    public List<Word> getWordFromFrequency(List<Word> words)
+    {
+        List<Word> results=new ArrayList<>();
+        for (Word w: words
+             ) {
+            if(frequencyRepo.existsByWord(w.getWord())  && frequencyRepo.findByWord(w.getWord()).getId()<=20000)
+            {
+                    results.add(w);
+            }
+        }
+        return results;
     }
 
 }

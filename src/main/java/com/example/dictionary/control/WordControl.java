@@ -35,7 +35,7 @@ public class WordControl {
     private FrequencyServ frequencyServ;
     public WordControl()
     {
-        WordResult nullWordResult=new WordResult("...","...",false,false,0);
+        WordResult nullWordResult=new WordResult("...","...",false,false,0,false);
         nullWordResults=new ArrayList<>();
         nullWordResults.add(nullWordResult);
     }
@@ -53,7 +53,15 @@ public class WordControl {
     {
         return detailResultServ.getResult(id);
     }
-
+    @RequestMapping("/api/remember")
+    @ResponseBody
+    public void getRemember(@RequestParam("ID") String id,@RequestParam("status") Boolean status){
+        System.out.println("word"+id);
+        System.out.println("staut"+status);
+        Word w=wordServ.findOneById(id);
+        w.setRemember(!status);
+        wordServ.save(w);
+    }
 
     @RequestMapping("/api/getData")
     @ResponseBody
@@ -62,14 +70,21 @@ public class WordControl {
 
 
         //如果有中文字符，则模糊查找解释
+        // 如果高频选中，则从高频表中查找单词
         if(isContainChinese(id))
         {
-            words=wordServ.findWordWithTranslation(id);
-
+            if(highFrequentCheck==true)
+            {
+                List<Word> findWordWithTranslation=wordServ.findWordWithTranslation(id);
+                words=frequencyServ.getWordFromFrequency(findWordWithTranslation);
+            }
+            else {
+                words=wordServ.findWordWithTranslation(id);
+            }
             List<WordResult> wordResults= new ArrayList<>();
             for (Word w: words
             ) {
-                wordResults.add(new WordResult(w.getWord(),w.getTranslation(), pronunciation_1Serv.havePronunciation(w.getWord()),pronunciation_2_serv.havePronunciation(w.getWord()),frequencyServ.getFrequency(w.getWord())));
+                wordResults.add(new WordResult(w.getWord(),w.getTranslation(), pronunciation_1Serv.havePronunciation(w.getWord()),pronunciation_2_serv.havePronunciation(w.getWord()),frequencyServ.getFrequency(w.getWord()),w.getRemember()));
             }
             if(wordResults.size()==0) return nullWordResults ;
             return wordResults;        }
@@ -136,7 +151,7 @@ public class WordControl {
         List<WordResult> wordResults= new ArrayList<>();
         for (Word w: words
              ) {
-            wordResults.add(new WordResult(w.getWord(),w.getTranslation(), pronunciation_1Serv.havePronunciation(w.getWord()),pronunciation_2_serv.havePronunciation(w.getWord()),frequencyServ.getFrequency(w.getWord())));
+            wordResults.add(new WordResult(w.getWord(),w.getTranslation(), pronunciation_1Serv.havePronunciation(w.getWord()),pronunciation_2_serv.havePronunciation(w.getWord()),frequencyServ.getFrequency(w.getWord()),w.getRemember()));
         }
         if(wordResults.size()==0) return nullWordResults ;
 

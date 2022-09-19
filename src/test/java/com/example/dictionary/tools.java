@@ -57,21 +57,21 @@ class tools {
             for(int i=0;i<words.size();i++)
             {
                 // 取每个词的同义词，并对队列去重
-//                List<Synonym> synonymList=synonymServ.findAllSynonymClass(words.get(i).getWord());
-//                if(synonymList.size()>=2){
-//                    for (int k=0;k<synonymList.size();k++
-//                    ) {
-//                        Synonym a =synonymList.get(k);
-//                        for(int kk=k+1;kk<synonymList.size();kk++)
-//                        {
-//                            Synonym b=synonymList.get(kk);
-//                            if(synonymServ.compare(a,b))
-//                            {
-//                                synonymServ.delete(b);
-//                            }
-//                        }
-//                    }
-//                }
+                List<Synonym> synonymList=synonymServ.findAllSynonymClass(words.get(i).getWord());
+                if(synonymList.size()>=2){
+                    for (int k=0;k<synonymList.size();k++
+                    ) {
+                        Synonym a =synonymList.get(k);
+                        for(int kk=k+1;kk<synonymList.size();kk++)
+                        {
+                            Synonym b=synonymList.get(kk);
+                            if(synonymServ.compare(a,b))
+                            {
+                                synonymServ.delete(b);
+                            }
+                        }
+                    }
+                }
                 //取每个词的反义词，去重
                 List<Antonym> antonymList=antonymServ.findAllAntonyms(words.get(i).getWord());
                 if(antonymList.size()>=2){

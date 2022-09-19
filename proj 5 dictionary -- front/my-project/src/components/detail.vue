@@ -1,7 +1,10 @@
 <template>
    <div v-show="detailWordShow" class="pop"  @dblclick="disappeal()" >
           <div name="detailDiv">
+            <div style="display:flex">
               <p   class="detailWord"   >{{detail.word}}</p>
+              <input style="margin-left:1rem" name="remember"  v-model="checked" value="1"  type="checkbox" @click="sendRemember()"/>
+            </div>
               <p class="detailP"  v-if="detail.synonym!==''" style="color:green;">SYNONYM:  {{detail.synonym}}</p>
               <p class="detailP"  v-if="detail.antonym!==''" style="color:brown;">ANTONYM:  {{detail.antonym}}</p>
               <p class="detailP"  v-if="detail.collocation!==''" style="color:blue;">COLLOCATION:   {{detail.collocation}}</p>
@@ -45,7 +48,26 @@ import pic from '../components/picture'
           })
           .then(function (response) {
             that.detail=response.data;
-            console.log("detail=data")
+            console.log("detail=data");
+            that.checked=response.data.remember;
+          })
+          .catch(function (error) {
+            console.log(error);
+          });  
+      },
+      sendRemember(){
+          var that=this;
+           console.log("sendRemember");
+            this.axios.get('/api/remember', {
+            params: {
+              ID:that.parentMessage,
+              status: that.checked
+            },
+          })
+          .then(function () {
+            
+            that.$emit('getRememberStatus',that.checked);
+            console.log("emit to father:"+that.checked );
           })
           .catch(function (error) {
             console.log(error);
@@ -64,12 +86,11 @@ import pic from '../components/picture'
     data(){
        return{
           detail:"",
-    
+          checked:false,
           detailWordShow:false
-          
         }
     },
-     watch:{
+    watch:{
       parentMessage(n){
          console.info('new value ', n);    
          this.getDetail();               
@@ -93,7 +114,7 @@ import pic from '../components/picture'
       position: fixed;
       z-index: 2;
       padding-left:0.2rem;display:flex;flex-direction:row;
-    },
+    }
     div[name="detailDiv"]{
       margin-right:1rem;
       display:flex; 
@@ -121,6 +142,12 @@ import pic from '../components/picture'
     .gray
     {
       color:gray;    
+    }
+    input[name="remember"]{
+        height:1rem;
+        width:1rem;
+        padding-right: 0.5rem;
+        align-self:center;
     }
  
   

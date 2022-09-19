@@ -20,7 +20,8 @@ public class Word {
     private String word;
     @Column(length=512)
     private String translation;
-
+    @Column
+    private Boolean remember;
 
 }
 

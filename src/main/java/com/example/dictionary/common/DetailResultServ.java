@@ -42,8 +42,9 @@ public class DetailResultServ {
         if(sentence2!=null)
         sentenceResultList.add(this.copyToSentenceResult(sentence2));
         boolean hasPic=pictureServ.hasPic(id);
+        boolean remember =wordServ.isRemember(id);
 
-        return new DetailResult(word.getWord(),word.getTranslation(),synonym,antonym,collocation,sentenceResultList,hasPic);
+        return new DetailResult(word.getWord(),word.getTranslation(),synonym,antonym,collocation,sentenceResultList,hasPic,remember);
     }
     private SentenceResult copyToSentenceResult(Sentence1 sentence1)
     {

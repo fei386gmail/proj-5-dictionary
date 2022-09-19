@@ -85,7 +85,7 @@ public class Webspider_translation {
              ) {
             translation=translation.concat(w.getText());
         }
-        Word w=new Word(word,translation);
+        Word w=new Word(word,translation,false);
         try{
             wordServ.save(w);
         }

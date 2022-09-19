@@ -17,5 +17,6 @@ public class WordResult {
     private boolean pronunciation1;
     private boolean pronunciation2;
     private int frequency;
+    private boolean remember;
 
 }

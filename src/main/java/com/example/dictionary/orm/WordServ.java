@@ -112,4 +112,13 @@ public class WordServ {
         }
         return wordList;
     }
+    public boolean isRemember(String word)
+    {
+        Optional<Word> w=  wordRepo.findById(word);
+        if(w.isPresent())
+        {
+            return w.get().getRemember();
+        }
+        else return false;
+    }
 }

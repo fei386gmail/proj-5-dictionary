@@ -1,11 +1,9 @@
 <template>
   <div id="main" >
-    <div id="search">
-      <input name="word" v-model="wordInput" v-on:keyup.enter="getData()" >
-      <button @click="getData()">search</button><br>
-
-      <detailWord  ref="child"  :parentMessage="selectedWord"  ></detailWord>
-      
+    <div id="search" >
+           <input name="word" v-model="wordInput" v-on:keyup.enter="getData()" >
+          <button @click="getData()">search</button>
+          <label name="gaopin">Highly Used</label><input name="highFrequentCheck" v-model="highFrequentCheck" type="checkbox" /> 
     </div>
     
  
@@ -14,10 +12,10 @@
       
       </thead>
       <tbody>
-        <tr v-for="(word) in data" v-bind:key="word.word" @dblclick="transfer(word.word)" >
+        <tr v-for="(word) in data" v-bind:key="word.word" @dblclick="transfer(word.word)" v-bind:class=" {'wordRemember':word.remember==true}"  >
           
-          <td style="display:flex">
-            <span   class="word"   >{{word.word}}</span>
+          <td  name="tdWord">
+            <span class="word"     >{{word.word}}</span>
           </td>
           <td name="icon">
               <span v-if="word.pronunciation1"><player :parentMessage="word.word"></player></span>
@@ -32,10 +30,15 @@
           <td name="frequency">
               <span   v-if="word.frequency<4"><frequency :parentMessage="word.frequency"></frequency></span>
           </td>
+       
          
         </tr>
       </tbody>
     </table>    
+
+
+
+    <detailWord  ref="child"  :parentMessage="selectedWord"  @getRememberStatus="showRememberStatus" ></detailWord>
 
   </div>
 </template>
@@ -55,6 +58,7 @@ export default {
           data: "",
           selectedWord:"",
           wordInput:"",
+          highFrequentCheck:false
           }        
         },
   methods: {
@@ -63,7 +67,8 @@ export default {
         console.log("getData");
         this.axios.get('/api/getData', {
             params: {
-              ID: this.wordInput
+              ID: this.wordInput,
+              highFrequentCheck:this.highFrequentCheck
             },
           })
           .then(function (response) {
@@ -72,6 +77,10 @@ export default {
           .catch(function (error) {
             console.log(error);
           });
+    },
+    showRememberStatus(status){
+        console.log("showRememberStatus:"+status);
+       
     },
     transfer(word){
       this.selectedWord=word;
@@ -92,20 +101,40 @@ export default {
     flex-direction:column;
   }
   div[id="search"]{
-              margin-left: 2rem;
-              margin-right: auto;
+      display:flex;
+      width:auto;
     }
+  div[id="title"]{
+     display:flex;
+      align-items: center;
+      width:auto;
+
+  }
     input{
         border: black solid 2px;
         height: 2rem;
         width: 15rem;
-        margin-left: 2rem;
-        margin-top: 1rem;
+        margin-left:3rem;
+       
     }
+    label[name="gaopin"]{
+      align-self:center;
+      margin-left:auto;
+      width:2.3rem;
+      font-size: 40%;
+    }
+    input[name="highFrequentCheck"]{
+        height:1rem;
+        width:1rem;
+        align-self:center;
+        margin-right:2.5rem;
+        margin-left:0.1rem;
+    }
+  
     button{
         height: 2.3rem;
         width: 6.4rem;
-        margin-left: 0.1rem;
+        margin-left: 0.15rem;
     }
     
     
@@ -119,21 +148,38 @@ export default {
       height: 0.5rem;
       margin-left:1rem;
       padding:0;
-    }
-   
+      border-color:gray;
+      border-style:solid;
+      border-width:1px
+          }
     td{
       height: 0.5rem;
       margin-left:0rem;
       text-align: left;
       padding:0
     }
-
+    td[name="tdWord"]
+    {
+     
+       width:10rem;
+    }
+    td[name="frequency"]{
+      margin-right: 0.5rem;
+      align-self: right;
+    }
   
     .word{
       margin-left:1rem;
       margin-top:0.1rem;
       margin-bottom:0.1rem;
-
+    }
+    .wordRemember{
+      margin-left:1rem;
+      margin-top:0.1rem;
+      margin-bottom:0.1rem;
+      color:brown;
+    
+    
     }
     p[name="tt"]{
       margin-left:1rem;

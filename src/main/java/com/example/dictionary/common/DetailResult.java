@@ -21,4 +21,5 @@ public class DetailResult {
     private String collocation;
     private List<SentenceResult> sentences;
     private boolean hasPicture;
+    private boolean remember;
 }
