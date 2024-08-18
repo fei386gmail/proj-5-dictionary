@@ -1,6 +1,5 @@
 package com.example.dictionary.orm;
 
-import com.example.dictionary.model.Frequency;
 import com.example.dictionary.model.Word;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -16,8 +15,7 @@ import com.example.dictionary.orm.WordRepo;
 public class WordServ {
     @Autowired
     private WordRepo wordRepo;
-    @Autowired
-    private FrequencyServ frequencyServ;
+
 
     public Page<Word> findAll(Pageable pageable){
         return wordRepo.findAll(pageable);
@@ -96,20 +94,6 @@ public class WordServ {
         wordRepo.save(word);
     }
 
-    public List<Word> findWordsFromFrequencies(List<Frequency> frequencies)
-    {
-        List<Word> wordList=new ArrayList<>();
-        for (Frequency f: frequencies
-             ) {
-            System.out.println(f.getWord());
-            Optional<Word> optionalWord= wordRepo.findById(f.getWord());
-            if(optionalWord.isPresent())
-            {
-                wordList.add(optionalWord.get());
-            }
-        }
-        return wordList;
-    }
     public boolean isRemember(String word)
     {
         Optional<Word> w=  wordRepo.findById(word);
