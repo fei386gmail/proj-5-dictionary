@@ -2,7 +2,7 @@
   <div id="main" >
     <div id="search" >
            <input name="word" v-model="wordInput" v-on:keyup.enter="getData()" >
-          <button name="searchButton" @click="getData()">search<input name="recallCheck" type="checkbox" v-model="recallCheck"/></button>
+          <button @click="getData()">search</button>
           <label name="gaopin">Highly Used</label><input name="highFrequentCheck" v-model="highFrequentCheck" type="checkbox" /> 
     </div>
     
@@ -58,8 +58,7 @@ export default {
           data: "",
           selectedWord:"",
           wordInput:"",
-          highFrequentCheck:false,
-          recallCheck:false
+          highFrequentCheck:false
           }        
         },
   methods: {
@@ -69,9 +68,7 @@ export default {
         this.axios.get('/api/getData', {
             params: {
               ID: this.wordInput,
-              highFrequentCheck:this.highFrequentCheck,
-              recallCheck:this.recallCheck
-
+              highFrequentCheck:this.highFrequentCheck
             },
           })
           .then(function (response) {
@@ -120,15 +117,6 @@ export default {
         margin-left:3rem;
        
     }
-    button[name="searchButton"]
-    {
-        display: flex;
-        flex-direction: row;
-        font-size: 110%;
-        align-items: center;
-        padding-left: 1.3rem;
-        padding-right: 0rem;
-    }
     label[name="gaopin"]{
       align-self:center;
       margin-left:auto;
@@ -142,15 +130,7 @@ export default {
         margin-right:2.5rem;
         margin-left:0.1rem;
     }
-    input[name="recallCheck"]
-    {
-        height: 0.5rem;
-        width: 0.5rem;
-        margin-left: auto;
-        margin-right: 0;
-        align-self: flex-end;
-        margin-bottom: 0;
-    }
+  
     button{
         height: 2.3rem;
         width: 6.4rem;
