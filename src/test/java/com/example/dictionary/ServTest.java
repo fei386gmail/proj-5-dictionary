@@ -34,7 +34,11 @@ public class ServTest {
     public void ss()
     {
 //
-        List<Word> words=wordServ.findWithStartAndEnd("c*h");
+        List<Frequency> frequencies=frequencyServ.findFrequenciesByIdStartingWithAndIdEndingWith("c*a*h");
+        for (Frequency w: frequencies
+             ) {
+            System.out.println(w);
+        }
 
     }
 }

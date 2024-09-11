@@ -128,4 +128,17 @@ public class FrequencyServ {
         return results;
     }
 
+    public List<Frequency> findFrequenciesByIdStartingWithAndIdEndingWith(String id)
+    {
+        String[] ss=id.split("\\*");
+        String start=ss[0];
+        int last=ss.length-1;
+        String end=ss[last];
+
+        List<Frequency> frequencies=frequencyRepo.findFrequenciesByIdStartingWithAndIdEndingWith(start,end);
+        if(frequencies==null || frequencies.size()==0) return  null;
+        return frequencies;
+
+    }
+
 }

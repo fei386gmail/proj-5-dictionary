@@ -126,7 +126,8 @@ public class WordServ {
     {
         String[] ss=id.split("\\*");
         String start=ss[0];
-        String end=ss[1];
+        int last=ss.length-1;
+        String end=ss[last];
         List<Word> results=wordRepo.findWordsByWordIsStartingWithAndAndWordIsEndingWith(start,end);
         if(results==null || results.size()==0) return  null;
         return results;

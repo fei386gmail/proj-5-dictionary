@@ -99,7 +99,7 @@ public class WordControl {
         }
         //包含*，则进行模糊查找
         else {
-            if(id.startsWith("*")&& id.endsWith("*"))
+            if(id.startsWith("*")&& id.endsWith("*"))  // 如果以*开头和结尾
             {
                 id=id.substring(1,id.length());
                 id=id.substring(0,id.length()-1);
@@ -113,7 +113,7 @@ public class WordControl {
                     words=wordServ.findWords(id);
                 }
             }
-            else if (id.startsWith("*"))
+            else if (id.startsWith("*"))  // 如果仅以*开头
             {
                 id=id.substring(1,id.length());
                 if(highFrequentCheck==true)
@@ -125,7 +125,7 @@ public class WordControl {
                     words=wordServ.findWordWithSuffix(id);
                 }
             }
-            else if (id.endsWith("*"))
+            else if (id.endsWith("*"))   //如果以*结尾
             {
                 id=id.substring(0,id.length()-1);
                 if(highFrequentCheck==true) {
@@ -135,6 +135,11 @@ public class WordControl {
                 else {
                     words=wordServ.findWordWithPrefix(id);
                 }
+            }
+            //其他情况，例如中间有星
+            else if (id.contains("*") && !id.endsWith("*") && !id.startsWith("*"))
+            {
+                words= wordServ.findWithStartAndEnd(id);
             }
 
             else {

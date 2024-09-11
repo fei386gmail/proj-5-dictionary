@@ -16,4 +16,6 @@ public interface FrequencyRepo extends JpaRepository<Frequency,Integer> {
    public List<Frequency> findAllByWordStartingWith(String word);
    public List<Frequency> findAllByWordEndingWith(String word);
    public Boolean existsByWord(String word);
+
+   public List<Frequency> findFrequenciesByIdStartingWithAndIdEndingWith(String start,String end);
 }
