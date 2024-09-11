@@ -18,4 +18,6 @@ public interface WordRepo extends JpaRepository<Word,String> {
     public List<Word> findAllByWordStartingWithOrderByTranslationDesc(String id);
     public List<Word> findAllByWordEndingWithOrderByTranslationDesc(String id);
     public List<Word> findAllByTranslationContaining(String id);
+
+    public List<Word> findWordsByWordIsStartingWithAndAndWordIsEndingWith(String start,String end);
 }

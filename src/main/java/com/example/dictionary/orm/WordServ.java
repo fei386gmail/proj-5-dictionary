@@ -121,4 +121,14 @@ public class WordServ {
         }
         else return false;
     }
+
+    public List<Word> findWithStartAndEnd(String id)
+    {
+        String[] ss=id.split("\\*");
+        String start=ss[0];
+        String end=ss[1];
+        List<Word> results=wordRepo.findWordsByWordIsStartingWithAndAndWordIsEndingWith(start,end);
+        if(results==null || results.size()==0) return  null;
+        return results;
+    }
 }

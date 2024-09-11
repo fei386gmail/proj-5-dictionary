@@ -34,9 +34,7 @@ public class ServTest {
     public void ss()
     {
 //
-
-        Boolean b= sentence1Serv.isExist("bookkkk");
-         System.out.println(b);
+        List<Word> words=wordServ.findWithStartAndEnd("c*h");
 
     }
 }
