@@ -2,6 +2,7 @@ package com.example.dictionary.control;
 
 import com.example.dictionary.common.DetailResult;
 import com.example.dictionary.common.DetailResultServ;
+import com.example.dictionary.common.Tools;
 import com.example.dictionary.common.WordResult;
 import com.example.dictionary.model.Frequency;
 import com.example.dictionary.model.Word;
@@ -23,6 +24,8 @@ import java.util.regex.Pattern;
 @Controller
 public class WordControl {
     List<WordResult> nullWordResults;
+    @Autowired
+    private Tools tools;
     @Autowired
     private WordServ wordServ;
     @Autowired
@@ -98,62 +101,74 @@ public class WordControl {
 
         }
         //包含*，则进行模糊查找
-        else {
-            if(id.startsWith("*")&& id.endsWith("*"))
+        if(id.contains("*")) {
+            if(id.startsWith("*") && id.endsWith("*"))  // 如果以*开头和结尾
             {
-                id=id.substring(1,id.length());
-                id=id.substring(0,id.length()-1);
+
                 if(highFrequentCheck==true)
                 {
-                    List<Frequency> frequencies=frequencyServ.findFrequencyLike(id);
-                    if(frequencies.size()==0) return  null;
+                    List<Frequency> frequencies=frequencyServ.findFrequencyContain(id);
+                    if(frequencies==null || frequencies.size()==0  ) return  nullWordResults;
                     words=wordServ.findWordsFromFrequencies(frequencies);
                 }
                 else {
-                    words=wordServ.findWords(id);
+                    words=wordServ.findWordsContains(id);
                 }
             }
-            else if (id.startsWith("*"))
+            else if (id.startsWith("*"))  // 如果仅以*开头
             {
                 id=id.substring(1,id.length());
                 if(highFrequentCheck==true)
                 {
                     List<Frequency> frequencies=frequencyServ.findFrenquencyWithSuffix(id);
+                    if(frequencies==null) return nullWordResults;
                     words=wordServ.findWordsFromFrequencies(frequencies);
                 }
                 else {
                     words=wordServ.findWordWithSuffix(id);
                 }
             }
-            else if (id.endsWith("*"))
+            else if (id.endsWith("*"))   //如果以*结尾
             {
                 id=id.substring(0,id.length()-1);
                 if(highFrequentCheck==true) {
                     List<Frequency> frequencies=frequencyServ.findFrenquencyWithPrefix(id);
+                    if(frequencies==null) return nullWordResults;
                     words=wordServ.findWordsFromFrequencies(frequencies);
                 }
                 else {
                     words=wordServ.findWordWithPrefix(id);
                 }
             }
-
-            else {
+            //中间有星
+            else if (id.contains("*") && !id.endsWith("*") && !id.startsWith("*"))
+            {
                 if(highFrequentCheck==true) {
-                    List<Frequency> frequencies=frequencyServ.findFrenquencyWithPrefixAndSuffix(id);
+                    List<Frequency> frequencies=frequencyServ.findFrequenciesByStartAndEnd(id);
+                    if(frequencies==null) return nullWordResults;
                     words=wordServ.findWordsFromFrequencies(frequencies);
                 }
                 else {
-                    words=wordServ.findWordWithPrefixAndSuffix(id);
+                    words=wordServ.findWithStartAndEnd(id);
+                }
+            }
+            //其他情况
+            else {
+                if(highFrequentCheck==true) {
+                    List<Frequency> frequencies=frequencyServ.findFrequencyLike(id);
+                    if(frequencies==null) return nullWordResults;
+                    words=wordServ.findWordsFromFrequencies(frequencies);
+                }
+                else {
+                    words=wordServ.findWordsLike(id);
                 }
             }
         }
         //
         List<WordResult> wordResults= new ArrayList<>();
-        for (Word w: words
-             ) {
-            wordResults.add(new WordResult(w.getWord(),w.getTranslation(), pronunciation_1Serv.havePronunciation(w.getWord()),pronunciation_2_serv.havePronunciation(w.getWord()),frequencyServ.getFrequency(w.getWord()),w.getRemember()));
-        }
-        if(wordResults.size()==0) return nullWordResults ;
+        if(words==null || words.size()==0 ) return nullWordResults ;
+
+        wordResults= tools.copyWords2WordResults(words);
 
         return wordResults;
     }

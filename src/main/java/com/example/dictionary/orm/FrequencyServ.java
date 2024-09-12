@@ -53,9 +53,22 @@ public class FrequencyServ {
         }
         return f;
     }
+    public List<Frequency> findFrequencyContain(String id)
+    {
+        String trim=id.substring(1,id.length()-1);
+
+        List<Frequency> frequencyList=  frequencyRepo.findTop500ByWordContains(trim);
+        List<Frequency> frequencyNew=  new ArrayList<>();
+        for (Frequency f: frequencyList
+        ) {
+            if( getFrequency(f.getWord())<=2) frequencyNew.add(f);
+        }
+        return  frequencyNew;
+    }
     public List<Frequency> findFrequencyLike(String id)
     {
-        List<Frequency> frequencyList=  frequencyRepo.findAllByWordContains(id);
+
+        List<Frequency> frequencyList=  frequencyRepo.findByWordLike(id);
         List<Frequency> frequencyNew=  new ArrayList<>();
         for (Frequency f: frequencyList
              ) {
@@ -66,7 +79,9 @@ public class FrequencyServ {
 
     public List<Frequency> findFrenquencyWithPrefix(String id)
     {
-        List<Frequency> frequencyList= frequencyRepo.findAllByWordStartingWith(id);
+        List<Frequency> frequencyList= frequencyRepo.findTop500ByWordStartingWith(id);
+        if(frequencyList==null || frequencyList.size()==0) return null;
+
         List<Frequency> frequencyNew=  new ArrayList<>();
         for (Frequency f: frequencyList
         ) {
@@ -77,7 +92,7 @@ public class FrequencyServ {
 
     public List<Frequency> findFrenquencyWithSuffix(String id)
     {
-        List<Frequency> frequencyList=  frequencyRepo.findAllByWordEndingWith(id);
+        List<Frequency> frequencyList=  frequencyRepo.findTop500ByWordEndingWith(id);
         List<Frequency> frequencyNew=  new ArrayList<>();
         for (Frequency f: frequencyList
         ) {
@@ -94,10 +109,10 @@ public class FrequencyServ {
         Frequency frequency2=new Frequency();
 
         frequency1.setWord(ss[0]);
-        List<Frequency> words1=frequencyRepo.findAllByWordStartingWith(frequency1.getWord());
+        List<Frequency> words1=frequencyRepo.findTop500ByWordStartingWith(frequency1.getWord());
 
         frequency2.setWord(ss[1]);
-        List<Frequency> words2=frequencyRepo.findAllByWordEndingWith(frequency2.getWord());
+        List<Frequency> words2=frequencyRepo.findTop500ByWordEndingWith(frequency2.getWord());
 
         List<Frequency> results=new ArrayList<>();
         for (Frequency w1:words1
@@ -126,6 +141,25 @@ public class FrequencyServ {
             }
         }
         return results;
+    }
+
+    public List<Frequency> findFrequenciesByStartAndEnd(String id)
+    {
+        String[] ss=id.split("\\*");
+        String start=ss[0];
+        int last=ss.length-1;
+        String end=ss[last];
+
+        List<Frequency> frequencies=frequencyRepo.findTop500ByWordIsStartingWithAndWordIsEndingWith(start,end);
+        if(frequencies==null || frequencies.size()==0) return  null;
+        List<Frequency> frequencyNew=  new ArrayList<>();
+        for (Frequency f: frequencies
+        ) {
+            if( getFrequency(f.getWord())<=2) frequencyNew.add(f);
+        }
+        return  frequencyNew;
+
+
     }
 
 }

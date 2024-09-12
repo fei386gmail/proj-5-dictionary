@@ -1,0 +1,74 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+start
+:RequestMapping("/api/getData")'
+捕捉URL;
+:Param1:ID'
+ Param2:highFrequentCheck'
+ 两个参数;
+if (isContainChinese'
+如果包含汉字) then (true)
+    :findWordWithTranslation
+            根据含义查词;
+else(false)
+        if(id.contains("*")'
+        如果包含*号) then(true)
+            if(id.startsWith("*") &&'
+            id.endsWith("*")'
+            如果前缀后缀有*) then (true)
+                if(highFrequentCheck) then(true)
+                    :findFrequencyContain
+                        查询包含高频单词;
+                else(false)
+                    :findWordsContains
+                          查询单词表;
+                endif
+             elseif(id.startsWith("*")‘
+             如果前缀有*) then(true)
+                if(highFrequentCheck) then(true)
+                    :findFrenquencyWithSuffix
+                         查询包含高频单词;
+                else(false)
+                    :findWordWithSuffix
+                          查询单词表;
+                endif
+            elseif(id.endsWith("*")'
+            如果后缀有*) then(true)
+                if(highFrequentCheck) then(true)
+                    :findFrenquencyWithPrefix
+                         查询包含高频单词;
+                else(false)
+                    :findWordWithPrefix
+                          查询单词表;
+                endif
+            elseif(              id.contains("*")'
+            && !id.endsWith("*")'
+            && !id.startsWith("*")'
+                  如果中间有*) then(true)
+                 if(highFrequentCheck) then(true)
+                        :findFrequenciesByStartAndEnd
+                                查询包含高频单词;
+                 else(false)
+                      :findWithStartAndEnd
+                            查询单词表;
+                 endif
+            else
+                if(highFrequentCheck) then(true)
+                        :findFrequencyLike
+                         查询包含高频单词;
+                else(false)
+                      :findWordsByWordLike
+                            查询单词表;
+                endif
+            endif
+
+        else(false)
+            :findOneById精确查找;
+        endif
+endif
+
+
+stop
+
+@enduml
