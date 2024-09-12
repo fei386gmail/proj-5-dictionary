@@ -37,21 +37,34 @@ public class WordServ {
     {
         return (int) wordRepo.count();
     }
-    public List<Word> findWords(String id)
+    public List<Word> findWordsContains(String id)
     {
-        return wordRepo.findAllByWordContainsOrderByTranslationDesc(id);
+        String trim=id.substring(1,id.length()-1);
+        List<Word> words=wordRepo.findTop500ByWordContainingOrderByTranslationDesc(trim);
+        if(words==null || words.size()==0) return null;
+        return words;
     }
+
 
     public List<Word> findWordWithPrefix(String id)
     {
 
-        return  wordRepo.findAllByWordStartingWithOrderByTranslationDesc(id);
+        return  wordRepo.findTop500ByWordStartingWithOrderByTranslationDesc(id);
     }
 
     public List<Word> findWordWithSuffix(String id)
     {
 
-        return  wordRepo.findAllByWordEndingWithOrderByTranslationDesc(id);
+        return  wordRepo.findTop500ByWordEndingWithOrderByTranslationDesc(id);
+    }
+
+    public List<Word> findWordsLike(String id){
+        List<Word> words=wordRepo.findTop500ByWordLike(id);
+        if(words==null || words.size()==0)
+        {
+            return null;
+        }
+        return words;
     }
 
     public List<Word> findWordWithPrefixAndSuffix(String id)
@@ -62,10 +75,10 @@ public class WordServ {
         Word word2=new Word();
 
         word1.setWord(ss[0]);
-        List<Word> words1=wordRepo.findAllByWordStartingWithOrderByTranslationDesc(word1.getWord());
+        List<Word> words1=wordRepo.findTop500ByWordStartingWithOrderByTranslationDesc(word1.getWord());
 
         word2.setWord(ss[1]);
-        List<Word> words2=wordRepo.findAllByWordEndingWithOrderByTranslationDesc(word2.getWord());
+        List<Word> words2=wordRepo.findTop500ByWordEndingWithOrderByTranslationDesc(word2.getWord());
 
         List<Word> results=new ArrayList<>();
         for (Word w1:words1
@@ -82,7 +95,7 @@ public class WordServ {
     public List<Word> findWordWithTranslation(String id)
     {
 //
-        return  wordRepo.findAllByTranslationContaining(id);
+        return  wordRepo.findTop500ByTranslationContaining(id);
     }
 
     public Boolean isExist(String w)
@@ -128,7 +141,7 @@ public class WordServ {
         String start=ss[0];
         int last=ss.length-1;
         String end=ss[last];
-        List<Word> results=wordRepo.findWordsByWordIsStartingWithAndAndWordIsEndingWith(start,end);
+        List<Word> results=wordRepo.findTop500ByWordIsStartingWithAndWordIsEndingWith(start,end);
         if(results==null || results.size()==0) return  null;
         return results;
     }

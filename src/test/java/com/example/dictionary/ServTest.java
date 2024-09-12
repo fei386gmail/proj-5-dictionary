@@ -34,10 +34,21 @@ public class ServTest {
     public void ss()
     {
 //
-        List<Frequency> frequencies=frequencyServ.findFrequenciesByIdStartingWithAndIdEndingWith("c*a*h");
-        for (Frequency w: frequencies
+//        List<Frequency> frequencies=frequencyServ.findFrequenciesByIdStartingWithAndIdEndingWith("c*a*h");
+//        for (Frequency w: frequencies
+//             ) {
+//            System.out.println(w);
+//        }
+//        List<Frequency> frequencies=frequencyServ.findFrequencyLike("book");
+//        for (Frequency w: frequencies
+//             ) {
+//            System.out.println(w);
+//        }
+        List<Word> words=wordServ.findWordsContains("*book*");
+        for (Word w:words
              ) {
             System.out.println(w);
+
         }
 
     }

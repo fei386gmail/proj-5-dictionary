@@ -29,6 +29,7 @@
 /Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/model/Synonym.java
 /Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/orm/WordServ.java
 /Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/model/Pronunciation_US_2.java
+/Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/common/Tools.java
 /Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/model/Picture.java
 /Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/orm/Pronunciation_2_Serv.java
 /Users/chenfei/Documents/GitHub/proj-5-dictionary/src/main/java/com/example/dictionary/model/Frequency.java

@@ -4,6 +4,7 @@
     <content url="file://$MODULE_DIR$" dumb="true">
       <excludeFolder url="file://$MODULE_DIR$/Dump20240911" />
       <excludeFolder url="file://$MODULE_DIR$/proj 5 dictionary -- front" />
+      <excludeFolder url="file://$MODULE_DIR$/文档" />
     </content>
   </component>
   <component name="FacetManager">

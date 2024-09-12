@@ -12,10 +12,10 @@ public interface FrequencyRepo extends JpaRepository<Frequency,Integer> {
 
    public Frequency findByWord(String word);
    public List<Frequency> findByWordLike(String word);
-   public List<Frequency> findAllByWordContains(String word);
-   public List<Frequency> findAllByWordStartingWith(String word);
-   public List<Frequency> findAllByWordEndingWith(String word);
+   public List<Frequency> findTop500ByWordContains(String word);
+   public List<Frequency> findTop500ByWordStartingWith(String word);
+   public List<Frequency> findTop500ByWordEndingWith(String word);
    public Boolean existsByWord(String word);
 
-   public List<Frequency> findFrequenciesByIdStartingWithAndIdEndingWith(String start,String end);
+   public List<Frequency> findTop500ByWordIsStartingWithAndWordIsEndingWith(String start,String end);
 }

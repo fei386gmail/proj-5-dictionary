@@ -14,10 +14,11 @@ import java.util.List;
 @Repository
 public interface WordRepo extends JpaRepository<Word,String> {
 
-    public List<Word> findAllByWordContainsOrderByTranslationDesc(String id);
-    public List<Word> findAllByWordStartingWithOrderByTranslationDesc(String id);
-    public List<Word> findAllByWordEndingWithOrderByTranslationDesc(String id);
-    public List<Word> findAllByTranslationContaining(String id);
+    public List<Word> findTop500ByWordContainingOrderByTranslationDesc(String id);
 
-    public List<Word> findWordsByWordIsStartingWithAndAndWordIsEndingWith(String start,String end);
+    public List<Word> findTop500ByWordStartingWithOrderByTranslationDesc(String id);
+    public List<Word> findTop500ByWordEndingWithOrderByTranslationDesc(String id);
+    public List<Word> findTop500ByTranslationContaining(String id);
+    public List<Word> findTop500ByWordLike(String id);
+    public List<Word> findTop500ByWordIsStartingWithAndWordIsEndingWith(String start,String end);
 }
