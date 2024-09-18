@@ -71,7 +71,8 @@ public class WordControl {
     public List<WordResult> getData(@RequestParam("ID") String id,@RequestParam("highFrequentCheck") Boolean highFrequentCheck) throws InterruptedException {
         List<Word> words=new ArrayList<>();
 
-
+        //去掉空格
+        id=id.replace(" ","");
         //如果有中文字符，则模糊查找解释
         // 如果高频选中，则从高频表中查找单词
         if(isContainChinese(id))
