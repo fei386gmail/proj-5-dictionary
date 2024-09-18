@@ -39,8 +39,7 @@ public class WordServ {
     }
     public List<Word> findWordsContains(String id)
     {
-        String trim=id.substring(1,id.length()-1);
-        List<Word> words=wordRepo.findTop500ByWordContainingOrderByTranslationDesc(trim);
+        List<Word> words=wordRepo.findTop500ByWordContainingOrderByTranslationDesc(id);
         if(words==null || words.size()==0) return null;
         return words;
     }

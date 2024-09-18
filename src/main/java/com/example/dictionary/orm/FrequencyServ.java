@@ -55,9 +55,7 @@ public class FrequencyServ {
     }
     public List<Frequency> findFrequencyContain(String id)
     {
-        String trim=id.substring(1,id.length()-1);
-
-        List<Frequency> frequencyList=  frequencyRepo.findTop500ByWordContains(trim);
+        List<Frequency> frequencyList=  frequencyRepo.findTop500ByWordContains(id);
         List<Frequency> frequencyNew=  new ArrayList<>();
         for (Frequency f: frequencyList
         ) {

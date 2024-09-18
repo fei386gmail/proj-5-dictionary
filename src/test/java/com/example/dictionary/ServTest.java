@@ -44,12 +44,7 @@ public class ServTest {
 //             ) {
 //            System.out.println(w);
 //        }
-        List<Word> words=wordServ.findWordsContains("*book*");
-        for (Word w:words
-             ) {
-            System.out.println(w);
 
-        }
 
     }
 }
