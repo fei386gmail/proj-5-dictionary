@@ -16,7 +16,7 @@
     </repositories>
     <groupId>com.example</groupId>
     <artifactId>dictionary</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <name>dictionary</name>
     <description>Demo project for Spring Boot</description>
     <properties>

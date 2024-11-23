@@ -107,11 +107,11 @@ import pic from '../components/picture'
       display:flex;
       flex-direction:column;
       border: gray solid 2px;
-      top:10rem;
+      top:3.3rem;
       left:3rem;
       right:3rem;
       width: calc(100% - 6.5rem);
-      position: fixed;
+      position:absolute ;
       z-index: 2;
       padding-left:0.2rem;display:flex;flex-direction:row;
     }
