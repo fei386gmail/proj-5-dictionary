@@ -101,7 +101,7 @@ import pic from '../components/picture'
 <style>
   
   .pop {
-      margin-top:0.2rem;
+      margin-top:2.2rem;
       margin-right:1.2rem;
       background-color: azure;
       display:flex;
