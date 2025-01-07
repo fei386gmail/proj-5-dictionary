@@ -32,6 +32,13 @@ public class WebSpider {
 
     private WebDriver webDriver;
 
+    WebSpider()
+    {
+        //开始
+        System.setProperty("webdriver.chrome.driver","/Users/chenfei/Documents/GitHub/proj-5-dictionary/lib/chromedriver131");
+        webDriver=new ChromeDriver();
+
+    }
     @Test
     // search the page number if the chrome fails
     public void searchWordPosition()
@@ -254,4 +261,48 @@ public class WebSpider {
             }
         }
     }
+
+    public String searchTranslationAndSave(String word)
+    {
+
+
+        List<WebElement> span = null;
+        List<WebElement> span1 = null;
+
+        try {
+            webDriver.get("https://cn.bing.com/dict/search?q="+word+"&FORM=HDRSC6");
+            span= webDriver.findElements(new By.ByXPath("//span[@class='pos']"));
+            span1= webDriver.findElements(new By.ByXPath("//span[@class='def b_regtxt']"));
+            if(span.size()==0 )
+            {
+                return null;
+            }
+        }
+        catch (Exception e)
+        {
+
+        }
+        String translation="";
+        translation=translation+span.get(0).getText();
+        translation=translation+span1.get(0).getText();
+
+        return translation;
+
+    }
+    @Test
+    public void getTranslationFromWeb()
+    {
+        List<Word> wordsNotran=wordServ.findWordWithSpecTranslation(null);
+        for (Word w: wordsNotran
+        ) {
+            String tran=searchTranslationAndSave(w.getWord());
+            if(tran==null)
+                continue;
+            w.setTranslation(tran);
+            wordServ.save(w);
+            System.out.println(w.toString());
+        }
+
+    }
+
 }

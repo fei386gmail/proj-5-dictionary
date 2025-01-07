@@ -97,7 +97,11 @@ public class WordServ {
 //
         return  wordRepo.findTop500ByTranslationContaining(id);
     }
-
+    public List<Word> findWordWithSpecTranslation(String trans)
+    {
+//
+        return  wordRepo.findWordsByTranslationIs(trans);
+    }
     public Boolean isExist(String w)
     {
         Word word=new Word();

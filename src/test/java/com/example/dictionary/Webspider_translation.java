@@ -34,13 +34,16 @@ public class Webspider_translation {
     //参数
     int startPage=0;
     int wordsPerPage=100;
-
+    Webspider_translation()
+    {
+        //开始
+        System.setProperty("webdriver.chrome.driver","/Users/chenfei/Documents/GitHub/proj-5-dictionary/lib/chromedriver131");
+        webDriver=new ChromeDriver();
+    }
     @Test
     public void searchNullTranslation() throws Exception
     {
-        //开始
-        System.setProperty("webdriver.chrome.driver","/Users/chenfei/Documents/GitHub/proj-5-dictionary/lib/chromedriver");
-        webDriver=new ChromeDriver();
+
         PageRequest pageRequest=PageRequest.of(0,wordsPerPage);
         Page<Word> page=wordServ.findAll(pageRequest);
         long totalPages= page.getTotalPages();
@@ -65,8 +68,8 @@ public class Webspider_translation {
     }
 
 
-    @Test
-    public void spideTranslation(String word) throws Exception
+
+    public String spideTranslation(String word)
     {
 
         webDriver.get("http://www.youdao.com/w/eng/"+word+"/#keyfrom=dict2.index");
@@ -76,24 +79,40 @@ public class Webspider_translation {
         }
         catch (Exception e)
         {
-            return;
+            return null;
         }
-        if(transcontainer==null || transcontainer.size()==0) return;
+        if(transcontainer==null || transcontainer.size()==0) return null;
         List<WebElement> pos=transcontainer.get(0).findElements(new By.ByTagName("li"));
         String translation="";
         for (WebElement w: pos
              ) {
             translation=translation.concat(w.getText());
         }
-        Word w=new Word(word,translation,false);
-        try{
-            wordServ.save(w);
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
-        catch (Exception e)
-        {
-            return;
-        }
-        System.out.println("insert:"+w.getWord()+". "+w.getTranslation());
-        Thread.sleep(500);
+        return translation;
      }
+
+    @Test
+    public void getTranslationFromEnWords_bak()
+    {
+        List<Word> wordsNotran=wordServ.findWordWithSpecTranslation(null);
+        for (Word w: wordsNotran
+        ) {
+            String tran= null;
+            tran = spideTranslation(w.getWord());
+            w.setTranslation(tran);
+            wordServ.save(w);
+            System.out.println(w.toString());
+        }
+
+    }
+
+
+
+
 }

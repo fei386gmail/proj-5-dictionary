@@ -1,6 +1,7 @@
 package com.example.dictionary;
 
 import com.example.dictionary.common.DetailResultServ;
+import com.example.dictionary.model.EnWords_bak;
 import com.example.dictionary.model.Frequency;
 import com.example.dictionary.model.Word;
 import com.example.dictionary.orm.*;
@@ -29,22 +30,14 @@ public class ServTest {
     private FrequencyServ frequencyServ;
     @Autowired
     private Sentence1Serv sentence1Serv;
+    @Autowired
+    private EnWordsServe enWordsServe;
 
     @Test
     public void ss()
     {
-//
-//        List<Frequency> frequencies=frequencyServ.findFrequenciesByIdStartingWithAndIdEndingWith("c*a*h");
-//        for (Frequency w: frequencies
-//             ) {
-//            System.out.println(w);
-//        }
-//        List<Frequency> frequencies=frequencyServ.findFrequencyLike("book");
-//        for (Frequency w: frequencies
-//             ) {
-//            System.out.println(w);
-//        }
-
+        String enWordsBak=enWordsServe.getTranByWord("yes");
+        System.out.println(enWordsBak);
 
     }
 }

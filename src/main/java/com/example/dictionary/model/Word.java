@@ -23,6 +23,14 @@ public class Word {
     @Column
     private Boolean remember;
 
+    @Override
+    public String toString() {
+        return "Word{" +
+                "word='" + word + '\'' +
+                ", translation='" + translation + '\'' +
+                ", remember=" + remember +
+                '}';
+    }
 }
 
 

@@ -33,6 +33,8 @@ class tools {
     private CollocationServ collocationServ;
     @Autowired
     private FrequencyServ frequencyServ;
+    @Autowired
+    private EnWordsServe enWordsServe;
 
     private WebDriver webDriver;
 
@@ -135,5 +137,21 @@ class tools {
             }
         }
     }
+
+    @Test
+    public void getTranslationFromEnWords_bak()
+    {
+        List<Word> wordsNotran=wordServ.findWordWithSpecTranslation("");
+        for (Word w: wordsNotran
+        ) {
+            String tran=enWordsServe.getTranByWord(w.getWord());
+            w.setTranslation(tran);
+            wordServ.save(w);
+            System.out.println(w.toString());
+        }
+
+    }
+
+
 
 }

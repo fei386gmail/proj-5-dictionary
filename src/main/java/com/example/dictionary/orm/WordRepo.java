@@ -21,4 +21,5 @@ public interface WordRepo extends JpaRepository<Word,String> {
     public List<Word> findTop500ByTranslationContaining(String id);
     public List<Word> findTop500ByWordLike(String id);
     public List<Word> findTop500ByWordIsStartingWithAndWordIsEndingWith(String start,String end);
+    public List<Word> findWordsByTranslationIs(String trans);
 }
